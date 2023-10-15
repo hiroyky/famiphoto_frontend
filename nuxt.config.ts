@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     transpile: ['vuetify'],
   },
   modules: [
+      '@pinia/nuxt',
       'h3-session/nuxt',
     (_, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
