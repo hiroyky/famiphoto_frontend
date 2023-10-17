@@ -54,10 +54,11 @@
 
 <script setup lang="ts">
 
-import {definePageMeta} from "#imports";
+import {definePageMeta, useAuthStore} from "#imports";
 import LoginIdForm from "~/components/parts/LoginIdForm.vue";
 import UserNameForm from "~/components/parts/UserNameForm.vue";
 import LoginPasswordForm from "~/components/parts/LoginPasswordForm.vue";
+import {useRouter} from "vue-router";
 const appConfig = useAppConfig()
 definePageMeta({
   layout:"center"
@@ -71,8 +72,22 @@ const userNameErrorMessage = ref('')
 const password = ref('')
 const passwordErrorMessage = ref('')
 
-function onLoginIdCommit() {
-  step.value = 1
+const authStore = useAuthStore()
+
+async function onLoginIdCommit() {
+  try {
+    loading.value = true
+    if (await authStore.existUserId(loginId.value)) {
+      loginIdErrorMessage.value = "そのユーザIDは使われています。"
+      return
+    }
+    step.value = 1
+  } catch(err){
+
+  } finally {
+    loading.value = false
+  }
+
 }
 function onBack() {
   step.value--
@@ -80,7 +95,13 @@ function onBack() {
 function onUserNameCommit () {
   step.value = 2
 }
-function onCommit() {
-
+async function onCommit() {
+  try {
+    loading.value = true
+    await authStore.createUser(loginId.value, userName.value, password.value)
+    navigateTo("/")
+  } finally {
+    loading.value = false
+  }
 }
 </script>

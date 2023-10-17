@@ -39,7 +39,7 @@ export default defineNuxtConfig({
     }
   },
   session: {
-    secret: process.env.SESSION_SECRET!,
+    secret: "asfaoisdjo",
     resave: true,
     saveUninitialized: true,
     cookie: { secure: true },

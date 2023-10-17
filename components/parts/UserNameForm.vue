@@ -9,7 +9,7 @@
         </p>
         <v-text-field
             class="mt-4"
-            label="名前"
+            label="表示名"
             :autofocus=true
             :error-messages="errorMessage"
             :rules="rules"
