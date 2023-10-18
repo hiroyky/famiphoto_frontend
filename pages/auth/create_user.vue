@@ -58,7 +58,7 @@ import {definePageMeta, useAuthStore} from "#imports";
 import LoginIdForm from "~/components/parts/LoginIdForm.vue";
 import UserNameForm from "~/components/parts/UserNameForm.vue";
 import LoginPasswordForm from "~/components/parts/LoginPasswordForm.vue";
-import {useRouter} from "vue-router";
+import useAlertStore from "~/stores/alert-store";
 const appConfig = useAppConfig()
 definePageMeta({
   layout:"center"
@@ -73,6 +73,7 @@ const password = ref('')
 const passwordErrorMessage = ref('')
 
 const authStore = useAuthStore()
+const alertStore = useAlertStore()
 
 async function onLoginIdCommit() {
   try {
@@ -83,7 +84,7 @@ async function onLoginIdCommit() {
     }
     step.value = 1
   } catch(err){
-
+    alertStore.displayError('予期せぬ通信エラーが発生しました。')
   } finally {
     loading.value = false
   }

@@ -8,6 +8,9 @@ export const useApiStore = defineStore('api', {
                 body: JSON.stringify({
                     userId: req.userId,
                     password: req.password,
+                }),
+                headers: new Headers({
+                    'content-type': 'application/json'
                 })
             })
             if (!res.ok) {
@@ -16,10 +19,8 @@ export const useApiStore = defineStore('api', {
         },
 
         async logout() {
-            const res = await  fetch('/auth/logout', { method: 'POST' })
-            if (!res.ok) {
-                throw await ApiError.createInstanceFromRes(res)
-            }
+            const { remove } =await useSession()
+            await remove()
         },
     }
 })

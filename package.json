@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --dotenv .env.local",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -17,7 +17,7 @@
     "@graphql-codegen/typescript-operations": "^4.0.1",
     "@nuxt/devtools": "latest",
     "@pinia/nuxt": "^0.5.0",
-    "h3-session": "^0.2.5",
+    "@sidebase/nuxt-session": "^0.2.7",
     "http-proxy-middleware": "^2.0.6",
     "js-base64": "^3.7.5",
     "nuxt": "^3.7.4",

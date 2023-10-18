@@ -1,5 +1,3 @@
-import fetch, { RequestInit, Response } from 'node-fetch'
-
 export class ApiDriver {
   constructor (private baseUrl: string) {
   }

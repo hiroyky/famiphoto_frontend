@@ -1,9 +1,7 @@
-import { Base64 } from 'js-base64'
 import { ApiDriver } from './api-driver'
 import {
   AuthorizationCodeResponse,
   LoginRequest,
-  LoginResponse,
   PostOauthTokenRequest,
   PostOauthTokenResponse,
 } from '~/server/types/api-types'
@@ -14,11 +12,12 @@ export class ApiGateway {
   ) { }
 
   public async login (req: LoginRequest): Promise<AuthorizationCodeResponse> {
+    const conf = useRuntimeConfig()
     const res = await this.apiDriver.request('auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: basicAuthValue(),
+        Authorization: basicAuthValue(conf.clientId, conf.clientSecret),
       },
       body: JSON.stringify({
         user_id: req.userId,
@@ -52,11 +51,12 @@ export class ApiGateway {
       form.append('state', req.state)
     }
 
+    const conf = useRuntimeConfig()
     const res = await this.apiDriver.request('oauth/v2/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: basicAuthValue(),
+        Authorization: basicAuthValue(conf.clientId, conf.clientSecret),
       },
       body: form,
     })
@@ -68,9 +68,4 @@ export class ApiGateway {
       refreshToken: body.refresh_token,
     }
   }
-}
-
-export function basicAuthValue (): string {
-  const pass = Base64.encode(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`)
-  return `Basic ${pass}`
 }

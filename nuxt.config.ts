@@ -1,5 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, {transformAssetUrls} from "vite-plugin-vuetify";
+import {isDebug} from "std-env";
+
+const runtimeConfig = {
+  isDebug: process.env.IS_DEBUG === 'true',
+  apiBaseUrl: process.env.API_BASE_URL,
+  clientId: "famiphoto_web",
+  clientSecret: process.env.CLIENT_SECRET,
+  public: {}
+}
 
 export default defineNuxtConfig({
   app: {
@@ -8,22 +17,14 @@ export default defineNuxtConfig({
       viewport: "width=device-width, initial-scale=1",
     }
   },
-  runtimeConfig: {
-    isDebug: true,
-    apiBaseUrl: "http://localhost:7002/",
-    clientId: "famiphoto_web",
-    clientSecret: "YCNO4PGF9Kocq0V5pavMnLT2JAWwUm3xtiSR1sEzujHd786BkX",
-    public: {
-
-    },
-  },
+  runtimeConfig,
   devtools: { enabled: true },
   build: {
     transpile: ['vuetify'],
   },
   modules: [
       '@pinia/nuxt',
-      'h3-session/nuxt',
+      '@sidebase/nuxt-session',
     (_, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error
@@ -39,9 +40,11 @@ export default defineNuxtConfig({
     }
   },
   session: {
-    secret: "asfaoisdjo",
-    resave: true,
-    saveUninitialized: true,
-    cookie: { secure: true },
-  },
+    session: {
+      expiryInSeconds: 30 * (3600 * 24), // 30 days
+    },
+    api: {
+      methods: runtimeConfig.isDebug ? [ 'delete', 'get' ] : [ 'delete' ],
+    }
+  }
 })
