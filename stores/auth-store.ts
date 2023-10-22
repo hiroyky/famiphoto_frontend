@@ -12,13 +12,13 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async login (userId: string, password: string) {
-      const { login } = useApiStore()
-      await login({ userId, password })
+      const apiStore = useApiStore()
+      await apiStore.login({ userId, password })
     },
 
     async logout () {
-      const { logout } = useApiStore()
-      await logout()
+      const apiStore = useApiStore()
+      await apiStore.logout()
     },
 
     async createUser (userId: string, name: string, password: string) {

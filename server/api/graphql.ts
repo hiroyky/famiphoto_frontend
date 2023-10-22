@@ -2,8 +2,9 @@ import {createProxyMiddleware} from "http-proxy-middleware";
 import {basicAuthValue} from "~/server/utils/basic-auth";
 
 export default defineEventHandler(async (event) => {
+    console.log('gql server', event.method)
     const config = useRuntimeConfig()
-    if (!config.isDebug) {
+    if (event.method !== "POST" && !config.isDebug) {
         throw createError({
             statusCode: 404,
             statusMessage: 'Not found'
@@ -17,8 +18,8 @@ export default defineEventHandler(async (event) => {
         },
         changeOrigin: true,
         onProxyReq: (proxyReq) => {
-            const req = event.node.req
-            const session = event.context.sessions
+            const session = event.context.session
+            console.log("access token", session, session.access_token)
             if (session && session.access_token) {
                 proxyReq.setHeader('Authorization', `Bearer ${session.access_token}`)
             } else {

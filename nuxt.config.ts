@@ -1,13 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, {transformAssetUrls} from "vite-plugin-vuetify";
-import {isDebug} from "std-env";
 
 const runtimeConfig = {
   isDebug: process.env.IS_DEBUG === 'true',
   apiBaseUrl: process.env.API_BASE_URL,
   clientId: "famiphoto_web",
   clientSecret: process.env.CLIENT_SECRET,
-  public: {}
+  public: {
+    baseUrl: process.env.BASE_URL,
+  }
 }
 
 export default defineNuxtConfig({
@@ -19,6 +20,10 @@ export default defineNuxtConfig({
   },
   runtimeConfig,
   devtools: { enabled: true },
+  experimental: {
+    // GraphQLと通信する際にfalseにしないとエラーに
+    renderJsonPayloads: false
+  },
   build: {
     transpile: ['vuetify'],
   },
@@ -39,12 +44,23 @@ export default defineNuxtConfig({
       }
     }
   },
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
   session: {
     session: {
       expiryInSeconds: 30 * (3600 * 24), // 30 days
+      storageOptions: {
+        driver: 'fs',
+        options: {
+          base: './nuxt/',
+          ignore: []
+        }
+      }
     },
     api: {
       methods: runtimeConfig.isDebug ? [ 'delete', 'get' ] : [ 'delete' ],
     }
-  }
+  },
+
 })

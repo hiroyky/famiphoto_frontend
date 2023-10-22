@@ -44,6 +44,11 @@ export type Edge = {
   node: Node;
 };
 
+export type GqlStatus = {
+  __typename?: 'GqlStatus';
+  status: Scalars['String']['output'];
+};
+
 export type IndexingPhotosInput = {
   fast: Scalars['Boolean']['input'];
 };
@@ -165,6 +170,7 @@ export type PhotoUploadInfo = {
 export type Query = {
   __typename?: 'Query';
   existUserId: Scalars['Boolean']['output'];
+  gqlStatus: GqlStatus;
   me?: Maybe<User>;
   photo?: Maybe<Photo>;
   photoFile?: Maybe<PhotoFile>;
@@ -262,10 +268,23 @@ export type ExistUserIdQueryVariables = Exact<{
 
 export type ExistUserIdQuery = { __typename?: 'Query', existUserId: boolean };
 
+export type GqlStatusQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GqlStatusQuery = { __typename?: 'Query', gqlStatus: { __typename?: 'GqlStatus', status: string } };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, userId: string, name: string } | null };
+
+export type PhotosQueryVariables = Exact<{
+  limit: Scalars['Int']['input'];
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type PhotosQuery = { __typename?: 'Query', photos: { __typename?: 'PhotoPagination', pageInfo: { __typename?: 'PaginationInfo', page: number, paginationLength: number, hasNextPage: boolean, hasPreviousPage: boolean, count: number, totalCount: number }, nodes: Array<{ __typename?: 'Photo', id: string, name: string, dateTimeOriginal: any, thumbnailUrl: string, previewUrl: string }> } };
 
 
 export const CreateUserDocument = gql`
@@ -282,12 +301,40 @@ export const ExistUserIdDocument = gql`
   existUserId(id: $id)
 }
     `;
+export const GqlStatusDocument = gql`
+    query gqlStatus {
+  gqlStatus {
+    status
+  }
+}
+    `;
 export const MeDocument = gql`
     query me {
   me {
     id
     userId
     name
+  }
+}
+    `;
+export const PhotosDocument = gql`
+    query photos($limit: Int!, $offset: Int) {
+  photos(limit: $limit, offset: $offset) {
+    pageInfo {
+      page
+      paginationLength
+      hasNextPage
+      hasPreviousPage
+      count
+      totalCount
+    }
+    nodes {
+      id
+      name
+      dateTimeOriginal
+      thumbnailUrl
+      previewUrl
+    }
   }
 }
     `;
@@ -305,8 +352,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     existUserId(variables: ExistUserIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ExistUserIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<ExistUserIdQuery>(ExistUserIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'existUserId', 'query');
     },
+    gqlStatus(variables?: GqlStatusQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GqlStatusQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GqlStatusQuery>(GqlStatusDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'gqlStatus', 'query');
+    },
     me(variables?: MeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<MeQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<MeQuery>(MeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'me', 'query');
+    },
+    photos(variables: PhotosQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PhotosQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PhotosQuery>(PhotosDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'photos', 'query');
     }
   };
 }
