@@ -3,15 +3,17 @@ import {defineStore} from "pinia";
 export const useApiStore = defineStore('api', {
     actions: {
         async login(req: {  userId: string, password: string}) {
-            const res = await fetch('/auth/login', {
+            const headers = useRequestHeaders(['cookie'])
+            const res = await fetch('/api/auth/login', {
                 method: 'POST',
                 body: JSON.stringify({
                     userId: req.userId,
                     password: req.password,
                 }),
-                headers: new Headers({
-                    'content-type': 'application/json'
-                })
+                headers:{
+                    'content-type': 'application/json',
+                    ...headers
+                }
             })
             if (!res.ok) {
                 throw await ApiError.createInstanceFromRes(res)
@@ -19,8 +21,17 @@ export const useApiStore = defineStore('api', {
         },
 
         async logout() {
-            const { remove } =await useSession()
-            await remove()
+            const headers = useRequestHeaders(['cookie'])
+            const res = await fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                    ...headers,
+                }
+            })
+            if (!res.ok) {
+                throw await ApiError.createInstanceFromRes(res)
+            }
         },
     }
 })

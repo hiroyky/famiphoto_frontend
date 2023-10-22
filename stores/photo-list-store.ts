@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import useMeStore from "~/stores/me-store";
 import {useGqlStore} from "~/stores/gql-store";
-import {PaginationInfo, Photo, PhotosQuery} from "~/types/api-gql";
+import type {PaginationInfo, PhotosQuery} from "~/types/api-gql";
 
 interface State {
     photos: PhotosQuery['photos']['nodes']

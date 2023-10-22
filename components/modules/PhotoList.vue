@@ -8,12 +8,12 @@
 
 <script setup lang="ts">
 
-import {Photo} from "~/types/api-gql";
+import {PhotosQuery} from "~/types/api-gql";
 import {PropType} from "vue";
 
 defineProps({
   modelValue: {
-    type: Array as PropType<Photo[]>,
+    type: Array,
     default: []
   }
 })

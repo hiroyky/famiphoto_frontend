@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useGqlStore } from '~/stores/gql-store'
 import {useApiStore} from "~/stores/api-store";
+import useMeStore from "~/stores/me-store";
 
 // ログインページにリダイレクトとか？
 export const useAuthStore = defineStore('auth', {
@@ -14,6 +15,8 @@ export const useAuthStore = defineStore('auth', {
     async login (userId: string, password: string) {
       const apiStore = useApiStore()
       await apiStore.login({ userId, password })
+      const meStore = useMeStore()
+      await meStore.getMe()
     },
 
     async logout () {

@@ -6,6 +6,7 @@ const runtimeConfig = {
   apiBaseUrl: process.env.API_BASE_URL,
   clientId: "famiphoto_web",
   clientSecret: process.env.CLIENT_SECRET,
+  sessionSecret: process.env.SESSION_SECRET,
   public: {
     baseUrl: process.env.BASE_URL,
   }
@@ -19,6 +20,9 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig,
+  serverHandlers: [
+    { route: '/api/**', handler: '~/server/interfaces/http/app.ts' }
+  ],
   devtools: { enabled: true },
   experimental: {
     // GraphQLと通信する際にfalseにしないとエラーに
@@ -29,7 +33,6 @@ export default defineNuxtConfig({
   },
   modules: [
       '@pinia/nuxt',
-      '@sidebase/nuxt-session',
     (_, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error
@@ -47,20 +50,4 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ['./stores/**'],
   },
-  session: {
-    session: {
-      expiryInSeconds: 30 * (3600 * 24), // 30 days
-      storageOptions: {
-        driver: 'fs',
-        options: {
-          base: './nuxt/',
-          ignore: []
-        }
-      }
-    },
-    api: {
-      methods: runtimeConfig.isDebug ? [ 'delete', 'get' ] : [ 'delete' ],
-    }
-  },
-
 })
