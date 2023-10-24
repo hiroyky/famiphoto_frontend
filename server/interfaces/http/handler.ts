@@ -11,7 +11,6 @@ const router = express.Router()
 const nuxtConfig = useRuntimeConfig()
 
 router.get('/api/status', (req, res) => {
-    console.log('status ac: ', req.session.access_token)
     res.json({ status: 'ok' })
     res.end()
 })
@@ -38,7 +37,6 @@ router.post(
             req.session.access_token = accessToken
             req.session.access_token_expires = expireAt
             req.session.refresh_token = refreshToken
-            console.log("login ed ", req.session.access_token)
             res.sendStatus(200)
         } catch (err) {
             errorResponse(res, err)
@@ -56,7 +54,7 @@ router.post(
 )
 
 router.use(
-    '/api/graphql',
+    '/api/*',
     updateAccessToken,
     createProxyMiddleware({
         target: useRuntimeConfig().apiBaseUrl,
@@ -65,7 +63,23 @@ router.use(
             '^/api': '',
         },
         onProxyReq: (proxyReq, req, _) => {
-            console.log('ac: ',req.session.access_token)
+            if (req.session && req.session.access_token) {
+                proxyReq.setHeader('Authorization', `Bearer ${req.session.access_token}`)
+            } else {
+                proxyReq.setHeader('Authorization', basicAuthValue(nuxtConfig.clientId, nuxtConfig.clientSecret))
+            }
+        },
+    }),
+)
+
+router.use(
+    '/debug/graphql',
+    updateAccessToken,
+    createProxyMiddleware({
+        target: useRuntimeConfig().apiBaseUrl,
+        changeOrigin: true,
+        onProxyReq: (proxyReq, req, _) => {
+            console.log(proxyReq.path, proxyReq.method, useRuntimeConfig().apiBaseUrl)
             if (req.session && req.session.access_token) {
                 proxyReq.setHeader('Authorization', `Bearer ${req.session.access_token}`)
             } else {

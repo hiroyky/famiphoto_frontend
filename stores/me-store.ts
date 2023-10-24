@@ -25,7 +25,6 @@ const useMeStore = defineStore('me', {
                 return true
             }
             await this.getMe()
-            console.log('after req', this.me)
             return this.me !== null
         },
     }

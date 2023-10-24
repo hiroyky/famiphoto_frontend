@@ -14,7 +14,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
 
     const meStore = useMeStore(app.$pinia)
-    console.log("auth me", meStore.me)
     if (await meStore.isLoggedIn()) {
         return
     }

@@ -27,16 +27,22 @@ const usePhotoListStore = defineStore('photoList', {
     }),
     actions: {
         async getPhotos(q: PhotoGetQuery) {
-            const meStore = useMeStore()
-            const { client } = useGqlStore()
-            const res = await client.photos({
-                limit: q.limit,
-                offset: q.offset,
-            })
-            this.photos = res.photos.nodes
-                .map(item => item.thumbnailUrl === '' ? { ...item, thumbnailUrl: '/no_thumbnail.png' } : item)
-                .map(item => item.previewUrl === '' ? { ...item, previewUrl: '/no_thumbnail.ong' } : item)
-            this.paginationInfo = res.photos.pageInfo
+            try {
+                console.log('action getphotos')
+                const meStore = useMeStore()
+                const {client} = useGqlStore()
+
+                const res = await client.photos({
+                    limit: q.limit,
+                    offset: q.offset,
+                })
+                this.photos = res.photos.nodes
+                    .map(item => item.thumbnailUrl === '' ? {...item, thumbnailUrl: '/no_thumbnail.png'} : item)
+                    .map(item => item.previewUrl === '' ? {...item, previewUrl: '/no_thumbnail.ong'} : item)
+                this.paginationInfo = res.photos.pageInfo
+            } catch(err) {
+                console.log(err)
+            }
         }
     }
 })

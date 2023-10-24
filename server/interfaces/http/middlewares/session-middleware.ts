@@ -3,7 +3,6 @@ import { newAuthUseCase } from '../../../di/registry'
 import { SessionCookieName } from '../../../config'
 
 export async function updateAccessToken (req: express.Request, res: express.Response, next: express.NextFunction) {
-  console.log('update access token', req.session.access_token)
   if (!req.session || !req.session.access_token || !req.session.access_token_expires || !req.session.refresh_token) {
     return next()
   }

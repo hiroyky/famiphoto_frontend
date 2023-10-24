@@ -2,8 +2,11 @@
   <v-container fluid>
     <v-row justify="center" align="center">
       <v-col cols="12">
-        <div :="hoge"></div>
-        <nuxt-link to="./test">to</nuxt-link>
+        <div v-for="photo in photos">
+          <nuxt-link :to="`/photos/${photo.id}`">
+          <img :src="photo.thumbnailUrl" :alt="photo.name" />
+          </nuxt-link>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -11,11 +14,22 @@
 
 <script setup lang="ts">
 
-const hoge = ref('')
+import PhotoList from "~/components/modules/PhotoList.vue";
+import usePhotoListStore from "~/stores/photo-list-store";
+import path from "path";
+import type {PhotoQuery, PhotosQuery} from "~/types/api-gql";
 
-const store = useGqlStore()
-const headers = useRequestHeaders(['cookie'])
-const res = await useAsyncData('val', () => $fetch('/api/status', { headers }))
-console.log(res)
+const photoListStore = usePhotoListStore()
+
+const {data: photos} = useAsyncData(async () => {
+  await photoListStore.getPhotos({  limit: 10 })
+  return photoListStore.photos
+})
+
+
+
+function onPhotoClick(id: string) {
+  navigateTo(path.join('photos', id))
+}
 
 </script>

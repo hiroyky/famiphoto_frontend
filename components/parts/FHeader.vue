@@ -6,7 +6,7 @@
     <v-btn icon outlined to="/" class="mr-2">
       <v-icon>mdi-home</v-icon>
     </v-btn>
-    <v-toolbar-title v-text="title" />
+    <v-toolbar-title :text="title" />
   </v-app-bar>
 </template>
 
