@@ -13,7 +13,7 @@ interface PhotoGetQuery {
     offset?: number
 }
 
-const usePhotoListStore = defineStore('photoList', {
+export const usePhotoListStore = defineStore('photoList', {
     state: (): State => ({
         photos: [],
         paginationInfo: {
@@ -46,5 +46,3 @@ const usePhotoListStore = defineStore('photoList', {
         }
     }
 })
-
-export default usePhotoListStore

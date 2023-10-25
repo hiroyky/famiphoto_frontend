@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
+import path from "path";
 
-export const useApiStore = defineStore('api', {
+export  const useApiStore = defineStore('api', {
     actions: {
         async login(req: {  userId: string, password: string}) {
             const headers = useRequestHeaders(['cookie'])
@@ -33,6 +34,9 @@ export const useApiStore = defineStore('api', {
                 throw await ApiError.createInstanceFromRes(res)
             }
         },
+        downloadUrl(fileId: string) {
+            return path.join('/api/download/files', fileId)
+        }
     }
 })
 

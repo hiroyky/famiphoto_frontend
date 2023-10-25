@@ -4,7 +4,7 @@ interface State {
     photo: PhotoQuery['photo']
 }
 
-const usePhotoStore = defineStore('photo', {
+export const usePhotoStore = defineStore('photo', {
     state: (): State => ({
         photo: null
     }),
@@ -12,12 +12,12 @@ const usePhotoStore = defineStore('photo', {
     actions: {
         async getPhoto(id: string) {
             const { client } = useGqlStore()
-            console.log('store get photo', id)
             const res = await client.photo({ id })
-            console.log(res)
             this.photo = res.photo
+            return this.photo
+        },
+        download(fileId: string) {
+            console.log(fileId)
         }
     }
 })
-
-export default usePhotoStore

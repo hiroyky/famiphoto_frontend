@@ -148,6 +148,7 @@ export type PhotoExif = Node & {
 export type PhotoFile = Node & {
   __typename?: 'PhotoFile';
   fileHash: Scalars['String']['output'];
+  fileName: Scalars['String']['output'];
   fileType: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   importedAt: Scalars['Timestamp']['output'];
@@ -283,7 +284,7 @@ export type PhotoQueryVariables = Exact<{
 }>;
 
 
-export type PhotoQuery = { __typename?: 'Query', photo?: { __typename?: 'Photo', id: string, name: string, previewUrl: string, dateTimeOriginal: any, files: Array<{ __typename?: 'PhotoFile', id: string, fileType: string, fileHash: string }> } | null };
+export type PhotoQuery = { __typename?: 'Query', photo?: { __typename?: 'Photo', id: string, name: string, previewUrl: string, dateTimeOriginal: any, files: Array<{ __typename?: 'PhotoFile', id: string, fileType: string, fileHash: string, fileName: string }> } | null };
 
 export type PhotosQueryVariables = Exact<{
   limit: Scalars['Int']['input'];
@@ -335,6 +336,7 @@ export const PhotoDocument = gql`
       id
       fileType
       fileHash
+      fileName
     }
   }
 }
