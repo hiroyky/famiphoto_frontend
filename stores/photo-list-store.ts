@@ -27,8 +27,8 @@ export const usePhotoListStore = defineStore('photoList', {
     }),
     actions: {
         async getPhotos(q: PhotoGetQuery) {
+            console.log('offset', q.offset)
             try {
-                console.log('action getphotos')
                 const meStore = useMeStore()
                 const {client} = useGqlStore()
 
@@ -36,9 +36,10 @@ export const usePhotoListStore = defineStore('photoList', {
                     limit: q.limit,
                     offset: q.offset,
                 })
-                this.photos = res.photos.nodes
+                const photos = res.photos.nodes
                     .map(item => item.thumbnailUrl === '' ? {...item, thumbnailUrl: '/no_thumbnail.png'} : item)
                     .map(item => item.previewUrl === '' ? {...item, previewUrl: '/no_thumbnail.ong'} : item)
+                this.photos.push(...photos)
                 this.paginationInfo = res.photos.pageInfo
             } catch(err) {
                 console.log(err)

@@ -1,9 +1,13 @@
 <template>
-  <ul class="photo_list">
-    <li v-for="item in value" :key="item.id" class="photo_list__item">
-      <img :src="item.thumbnailUrl" :alt="item.name" class="photo_list__item__img" @click="onPhotoItemClick(item)">
-    </li>
-  </ul>
+  <div>
+    <ul class="photo_list">
+      <li v-for="item in value" :key="item.id" class="photo_list__item">
+        <img :src="item.thumbnailUrl" :alt="item.name" class="photo_list__item__img" @click="onPhotoItemClick(item)">
+      </li>
+    </ul>
+    <div v-intersect="onIntersect">
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -13,16 +17,29 @@ import type {Ref} from "vue";
 
 interface Props {
   value: PhotosQuery['photos']['nodes']
+  loading?: boolean
 }
 withDefaults(defineProps<Props>(), {
-  value: () => []
+  value: () => [],
+  loading: false
 })
 
 const emit =defineEmits<{
   photoClick: [ id: string ]
+  intersect: []
 }>()
 function onPhotoItemClick(el :{ id: string }) {
   emit('photoClick', el.id)
+}
+
+function onIntersect(
+    isIntersecting: boolean,
+    _1: IntersectionObserverEntry[],
+    _2: IntersectionObserver,
+) {
+  if (isIntersecting) {
+    emit('intersect')
+  }
 }
 
 </script>
