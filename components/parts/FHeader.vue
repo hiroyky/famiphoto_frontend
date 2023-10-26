@@ -7,6 +7,17 @@
       <v-icon>mdi-home</v-icon>
     </v-btn>
     <v-toolbar-title :text="title" />
+    <v-spacer />
+    <v-menu>
+      <template v-slot:activator="{props}">
+        <v-btn icon v-bind="props"><v-icon>mdi-account</v-icon></v-btn>
+      </template>
+      <v-list>
+        <v-list-item to="/auth/logout">
+          <v-list-item-title>ログアウト</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </v-app-bar>
 </template>
 

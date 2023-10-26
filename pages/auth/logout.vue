@@ -10,9 +10,7 @@ definePageMeta({
 
 const authStore = useAuthStore()
 
-onBeforeMount(async () => {
-  await authStore.logout()
-  navigateTo('/')
-})
+await authStore.logout()
+navigateTo('/')
 
 </script>

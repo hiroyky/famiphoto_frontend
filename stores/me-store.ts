@@ -27,6 +27,9 @@ const useMeStore = defineStore('me', {
             await this.getMe()
             return this.me !== null
         },
+        clear() {
+            this.me = null
+        }
     }
 })
 

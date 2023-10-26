@@ -22,6 +22,8 @@ export const useAuthStore = defineStore('auth', {
     async logout () {
       const apiStore = useApiStore()
       await apiStore.logout()
+      const meStore = useMeStore()
+      meStore.clear()
     },
 
     async createUser (userId: string, name: string, password: string) {
