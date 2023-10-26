@@ -119,6 +119,8 @@ export type PaginationInfo = {
   count: Scalars['Int']['output'];
   hasNextPage: Scalars['Boolean']['output'];
   hasPreviousPage: Scalars['Boolean']['output'];
+  limit: Scalars['Int']['output'];
+  offset: Scalars['Int']['output'];
   page: Scalars['Int']['output'];
   paginationLength: Scalars['Int']['output'];
   totalCount: Scalars['Int']['output'];
@@ -292,7 +294,7 @@ export type PhotosQueryVariables = Exact<{
 }>;
 
 
-export type PhotosQuery = { __typename?: 'Query', photos: { __typename?: 'PhotoPagination', pageInfo: { __typename?: 'PaginationInfo', page: number, paginationLength: number, hasNextPage: boolean, hasPreviousPage: boolean, count: number, totalCount: number }, nodes: Array<{ __typename?: 'Photo', id: string, name: string, dateTimeOriginal: any, thumbnailUrl: string, previewUrl: string }> } };
+export type PhotosQuery = { __typename?: 'Query', photos: { __typename?: 'PhotoPagination', pageInfo: { __typename?: 'PaginationInfo', limit: number, offset: number, page: number, paginationLength: number, hasNextPage: boolean, hasPreviousPage: boolean, count: number, totalCount: number }, nodes: Array<{ __typename?: 'Photo', id: string, name: string, dateTimeOriginal: any, thumbnailUrl: string, previewUrl: string }> } };
 
 
 export const CreateUserDocument = gql`
@@ -345,6 +347,8 @@ export const PhotosDocument = gql`
     query photos($limit: Int!, $offset: Int) {
   photos(limit: $limit, offset: $offset) {
     pageInfo {
+      limit
+      offset
       page
       paginationLength
       hasNextPage

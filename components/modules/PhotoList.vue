@@ -5,7 +5,7 @@
         <img :src="item.thumbnailUrl" :alt="item.name" class="photo_list__item__img" @click="onPhotoItemClick(item)">
       </li>
     </ul>
-    <div v-intersect="onIntersect">
+    <div v-intersect="onIntersectNext">
     </div>
   </div>
 </template>
@@ -26,19 +26,15 @@ withDefaults(defineProps<Props>(), {
 
 const emit =defineEmits<{
   photoClick: [ id: string ]
-  intersect: []
+  intersectNext: []
 }>()
 function onPhotoItemClick(el :{ id: string }) {
   emit('photoClick', el.id)
 }
 
-function onIntersect(
-    isIntersecting: boolean,
-    _1: IntersectionObserverEntry[],
-    _2: IntersectionObserver,
-) {
+function onIntersectNext(isIntersecting: boolean, _1: IntersectionObserverEntry[], _2: IntersectionObserver,) {
   if (isIntersecting) {
-    emit('intersect')
+    emit('intersectNext')
   }
 }
 

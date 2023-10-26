@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row justify="center" align="center">
       <v-col cols="12">
-        <photo-list :value="photos" @photo-click="onPhotoClick" @intersect="onIntersect"></photo-list>
+        <photo-list :value="photos" @photo-click="onPhotoClick" @intersect-next="onIntersectNext"></photo-list>
       </v-col>
     </v-row>
   </v-container>
@@ -15,39 +15,21 @@ import {usePhotoListStore} from "~/stores/photo-list-store";
 import path from "path";
 
 const photoListStore = usePhotoListStore()
-const route = useRoute()
-const router = useRouter()
 
-const offsetRoute = (): number => {
-  const val = route.query.offset
-  if (!val || typeof val !== 'string') {
-    return 0
-  }
-  const intVal = Number.parseInt(val)
-  if (isNaN(intVal)) {
-    return 0
-  }
-  return intVal
-}
-
-
-const offset = ref(offsetRoute())
-const offsetNext = ref(offsetRoute())
+const offset = ref(0)
 const limit = 20
 
 const {data: photos} = useAsyncData(async () => {
-  await photoListStore.getPhotos({  limit: 20 , offset: offsetNext.value })
+  await photoListStore.getPhotos({  limit: 20 , offset: offset.value })
   return photoListStore.photos
-}, { watch: [ offsetNext ] })
+}, { watch: [ offset ] })
 
 function onPhotoClick(id: string) {
   navigateTo(path.join('photos', id))
 }
 
-function onIntersect() {
-  offset.value = offsetNext.value
-  offsetNext.value += limit
-  router.push({ query: {offset: offset.value} })
+function onIntersectNext() {
+  offset.value += limit
 }
 
 </script>

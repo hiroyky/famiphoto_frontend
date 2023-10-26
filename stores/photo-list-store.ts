@@ -10,13 +10,15 @@ interface State {
 
 interface PhotoGetQuery {
     limit: number
-    offset?: number
+    offset: number
 }
 
 export const usePhotoListStore = defineStore('photoList', {
     state: (): State => ({
         photos: [],
         paginationInfo: {
+            limit: 0,
+            offset: 0,
             page: 0,
             paginationLength: 0,
             count: 0,
@@ -39,7 +41,11 @@ export const usePhotoListStore = defineStore('photoList', {
                 const photos = res.photos.nodes
                     .map(item => item.thumbnailUrl === '' ? {...item, thumbnailUrl: '/no_thumbnail.png'} : item)
                     .map(item => item.previewUrl === '' ? {...item, previewUrl: '/no_thumbnail.ong'} : item)
-                this.photos.push(...photos)
+                //if (q.offset < this.paginationInfo.offset) {
+                //    this.photos = [ ...photos, ...this.photos ]
+                //} else {
+                    this.photos.push(...photos)
+                //}
                 this.paginationInfo = res.photos.pageInfo
             } catch(err) {
                 console.log(err)
