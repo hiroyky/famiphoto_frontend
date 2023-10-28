@@ -16,7 +16,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   Cursor: { input: any; output: any; }
-  Timestamp: { input: any; output: any; }
+  Timestamp: { input: string; output: string; }
 };
 
 export type Connection = {
@@ -286,7 +286,7 @@ export type PhotoQueryVariables = Exact<{
 }>;
 
 
-export type PhotoQuery = { __typename?: 'Query', photo?: { __typename?: 'Photo', id: string, name: string, previewUrl: string, dateTimeOriginal: any, files: Array<{ __typename?: 'PhotoFile', id: string, fileType: string, fileHash: string, fileName: string }> } | null };
+export type PhotoQuery = { __typename?: 'Query', photo?: { __typename?: 'Photo', id: string, name: string, previewUrl: string, dateTimeOriginal: string, files: Array<{ __typename?: 'PhotoFile', id: string, fileType: string, fileHash: string, fileName: string }> } | null };
 
 export type PhotosQueryVariables = Exact<{
   limit: Scalars['Int']['input'];
@@ -294,7 +294,7 @@ export type PhotosQueryVariables = Exact<{
 }>;
 
 
-export type PhotosQuery = { __typename?: 'Query', photos: { __typename?: 'PhotoPagination', pageInfo: { __typename?: 'PaginationInfo', limit: number, offset: number, page: number, paginationLength: number, hasNextPage: boolean, hasPreviousPage: boolean, count: number, totalCount: number }, nodes: Array<{ __typename?: 'Photo', id: string, name: string, dateTimeOriginal: any, thumbnailUrl: string, previewUrl: string }> } };
+export type PhotosQuery = { __typename?: 'Query', photos: { __typename?: 'PhotoPagination', pageInfo: { __typename?: 'PaginationInfo', limit: number, offset: number, page: number, paginationLength: number, hasNextPage: boolean, hasPreviousPage: boolean, count: number, totalCount: number }, nodes: Array<{ __typename?: 'Photo', id: string, name: string, dateTimeOriginal: string, thumbnailUrl: string, previewUrl: string }> } };
 
 
 export const CreateUserDocument = gql`
