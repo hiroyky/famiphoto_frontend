@@ -1,10 +1,13 @@
 <template>
   <div>
-    <ul class="photo_list">
-      <li v-for="item in value" :key="item.id" class="photo_list__item">
-        <img :src="item.thumbnailUrl" :alt="item.name" class="photo_list__item__img" @click="onPhotoItemClick(item)">
-      </li>
-    </ul>
+    <v-card v-for="photoGroup in photosPerDateTimeOriginal" :key="photoGroup.id">
+      <v-card-title>{{ photoGroup.title }}</v-card-title>
+      <ul class="photo_list">
+        <li v-for="item in photoGroup.photos" :key="item.id" class="photo_list__item">
+          <img :src="item.thumbnailUrl" :alt="item.name" class="photo_list__item__img" @click="onPhotoItemClick(item)">
+        </li>
+      </ul>
+    </v-card>
     <div v-intersect="onIntersectNext">
     </div>
   </div>
@@ -14,12 +17,20 @@
 
 import type {PhotosQuery} from "~/types/api-gql";
 import type {Ref} from "vue";
+import type {PhotoList} from "~/types/api-gql-alias";
 
 interface Props {
-  value: PhotosQuery['photos']['nodes']
+  value: PhotoList
   loading?: boolean
 }
-withDefaults(defineProps<Props>(), {
+
+interface PhotoGroup {
+  id: string
+  title: string
+  photos: PhotoList
+}
+
+const props = withDefaults(defineProps<Props>(), {
   value: () => [],
   loading: false
 })
@@ -28,6 +39,36 @@ const emit =defineEmits<{
   photoClick: [ id: string ]
   intersectNext: []
 }>()
+
+const photosPerDateTimeOriginal = computed(() => {
+  const photos = props.value
+  const groups: PhotoGroup[] = []
+  for (let i = 0; i < photos.length; ++i) {
+    if (isDateTimeOriginalBorder(photos, i)) {
+      const dateTimeOriginal = new Date(photos[i].dateTimeOriginal)
+      const group: PhotoGroup = {
+        id: dateTimeOriginal.toDateString(),
+        title: `${dateTimeOriginal.getFullYear()}年${dateTimeOriginal.getMonth()+1}月${dateTimeOriginal.getDate()}日`,
+        photos: [ ]
+      }
+      groups.push(group)
+    }
+
+    const group = groups[groups.length - 1]
+    group.photos.push(photos[i])
+  }
+  return groups
+})
+
+function isDateTimeOriginalBorder(photos: PhotoList, i: number): boolean {
+  if (i===0 || !photos[i] || !photos[i - 1]) {
+    return true
+  }
+  const date1 = new Date(photos[i].dateTimeOriginal)
+  const date2 = new Date(photos[i-1].dateTimeOriginal)
+  return date1.getDate() !== date2.getDate()
+}
+
 function onPhotoItemClick(el :{ id: string }) {
   emit('photoClick', el.id)
 }

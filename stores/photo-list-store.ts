@@ -2,9 +2,10 @@ import {defineStore} from "pinia";
 import useMeStore from "~/stores/me-store";
 import {useGqlStore} from "~/stores/gql-store";
 import type {PaginationInfo, PhotosQuery} from "~/types/api-gql";
+import type {PhotoList} from "~/types/api-gql-alias";
 
 interface State {
-    photos: PhotosQuery['photos']['nodes']
+    photos: PhotoList
     paginationInfo: PaginationInfo
 }
 
@@ -29,7 +30,6 @@ export const usePhotoListStore = defineStore('photoList', {
     }),
     actions: {
         async getPhotos(q: PhotoGetQuery) {
-            console.log('offset', q.offset)
             try {
                 const meStore = useMeStore()
                 const {client} = useGqlStore()
@@ -41,14 +41,10 @@ export const usePhotoListStore = defineStore('photoList', {
                 const photos = res.photos.nodes
                     .map(item => item.thumbnailUrl === '' ? {...item, thumbnailUrl: '/no_thumbnail.png'} : item)
                     .map(item => item.previewUrl === '' ? {...item, previewUrl: '/no_thumbnail.ong'} : item)
-                //if (q.offset < this.paginationInfo.offset) {
-                //    this.photos = [ ...photos, ...this.photos ]
-                //} else {
-                    this.photos.push(...photos)
-                //}
+                this.photos.push(...photos)
                 this.paginationInfo = res.photos.pageInfo
             } catch(err) {
-                console.log(err)
+                console.error(err)
             }
         }
     }
