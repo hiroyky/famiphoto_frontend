@@ -3,7 +3,8 @@ import useMeStore from "~/stores/me-store";
 import gql from "graphql-tag";
 
 const exceptPaths: string[] = [
-    '/auth/login'
+    '/auth/login',
+    '/status',
 ]
 
 export default defineNuxtRouteMiddleware(async (to) => {
