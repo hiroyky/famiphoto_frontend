@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts",
+    "start": "nuxt start --dotenv .env.local"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",
