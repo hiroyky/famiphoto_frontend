@@ -79,7 +79,6 @@ router.use(
         target: useRuntimeConfig().apiBaseUrl,
         changeOrigin: true,
         onProxyReq: (proxyReq, req, _) => {
-            console.log(proxyReq.path, proxyReq.method, useRuntimeConfig().apiBaseUrl)
             if (req.session && req.session.access_token) {
                 proxyReq.setHeader('Authorization', `Bearer ${req.session.access_token}`)
             } else {
