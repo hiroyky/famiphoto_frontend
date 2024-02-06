@@ -8,7 +8,7 @@ const runtimeConfig = {
   clientSecret: process.env.CLIENT_SECRET,
   sessionSecret: process.env.SESSION_SECRET,
   public: {
-    baseUrl: process.env.BASE_URL,
+    baseUrl: process.env.PUBLIC_BASE_URL,
   }
 }
 
