@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 
 const exceptPaths: string[] = [
     '/auth/login',
+    '/auth/create_user',
     '/status',
 ]
 

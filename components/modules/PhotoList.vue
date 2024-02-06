@@ -41,7 +41,7 @@ const emit =defineEmits<{
 }>()
 
 const photosPerDateTimeOriginal = computed(() => {
-  const photos = props.value
+  const photos = props.value ? props.value : []
   const groups: PhotoGroup[] = []
   for (let i = 0; i < photos.length; ++i) {
     if (isDateTimeOriginalBorder(photos, i)) {
