@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# インストール後の処理
+
+sudo systemctl enable famiphoto_frontend.service
+sudo systemctl restart famiphoto_frontend.service

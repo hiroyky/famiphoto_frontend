@@ -1,0 +1,27 @@
+query photos(
+    $limit: Int!,
+    $offset: Int
+) {
+    photos(
+        limit: $limit,
+        offset: $offset
+    ) {
+        pageInfo {
+          limit
+          offset
+          page
+          paginationLength
+          hasNextPage
+          hasPreviousPage
+          count
+          totalCount
+        }
+        nodes {
+            id
+            name
+            dateTimeOriginal
+            thumbnailUrl
+            previewUrl
+        }
+    }
+}

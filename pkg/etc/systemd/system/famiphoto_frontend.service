@@ -1,0 +1,13 @@
+[Unit]
+Description=Famiphoto Frontend Server
+After=network.target
+
+[Service]
+WorkingDirectory=/var/www/famiphoto_frontend
+ExecStart=/usr/bin/node --env-file=./env ./server/index.mjs
+Restart=always
+User=famiphoto
+Group=famiphoto
+
+[Install]
+WantedBy=multi-user.target
