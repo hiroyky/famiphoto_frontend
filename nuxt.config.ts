@@ -39,6 +39,7 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({autoImport: true}))
       })
     },
+      '@nuxtjs/i18n',
   ],
   vite: {
     vue: {
@@ -50,4 +51,8 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ['./stores/**'],
   },
+  i18n: {
+    locales: ['en', 'ja'],
+    defaultLocale: 'en',
+  }
 })
