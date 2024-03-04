@@ -20,7 +20,7 @@ import type {Ref} from "vue";
 import type {PhotoList} from "~/types/api-gql-alias";
 
 interface Props {
-  value: PhotoList
+  value: PhotoList | null
   loading?: boolean
 }
 
@@ -41,7 +41,10 @@ const emit =defineEmits<{
 }>()
 
 const photosPerDateTimeOriginal = computed(() => {
-  const photos = props.value ? props.value : []
+  if (!props.value){
+    return []
+  }
+  const photos = props.value
   const groups: PhotoGroup[] = []
   for (let i = 0; i < photos.length; ++i) {
     if (isDateTimeOriginalBorder(photos, i)) {

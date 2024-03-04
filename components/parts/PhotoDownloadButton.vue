@@ -41,7 +41,6 @@ function onMenuButtonClick() {
 }
 
 function onItemClick(file: File) {
-  console.log('dl emit')
   emit('download', file.id, file.fileName)
 }
 
