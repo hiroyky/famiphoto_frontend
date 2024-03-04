@@ -1,5 +1,4 @@
 import {defineStore} from "pinia";
-import path from "path";
 
 export  const useApiStore = defineStore('api', {
     actions: {
@@ -35,7 +34,7 @@ export  const useApiStore = defineStore('api', {
             }
         },
         downloadUrl(fileId: string) {
-            return path.join('/api/download/files', fileId)
+            return `/api/download/files/${fileId}`
         }
     }
 })

@@ -12,7 +12,6 @@
 
 import PhotoList from "~/components/modules/PhotoList.vue";
 import {usePhotoListStore} from "~/stores/photo-list-store";
-import path from "path";
 
 const photoListStore = usePhotoListStore()
 
@@ -25,7 +24,7 @@ const {data: photos} = useAsyncData(async () => {
 }, { watch: [ offset ] })
 
 function onPhotoClick(id: string) {
-  navigateTo(path.join('photos', id))
+  navigateTo(`photos/${id}`)
 }
 
 function onIntersectNext() {
