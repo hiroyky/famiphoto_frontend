@@ -367,30 +367,30 @@ export const PhotosDocument = gql`
 }
     `;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
 
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, variables) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     createUser(variables: CreateUserMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateUserMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createUser', 'mutation');
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createUser', 'mutation', variables);
     },
     existUserId(variables: ExistUserIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ExistUserIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<ExistUserIdQuery>(ExistUserIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'existUserId', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<ExistUserIdQuery>(ExistUserIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'existUserId', 'query', variables);
     },
     gqlStatus(variables?: GqlStatusQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GqlStatusQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GqlStatusQuery>(GqlStatusDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'gqlStatus', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GqlStatusQuery>(GqlStatusDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'gqlStatus', 'query', variables);
     },
     me(variables?: MeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<MeQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<MeQuery>(MeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'me', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<MeQuery>(MeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'me', 'query', variables);
     },
     photo(variables: PhotoQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PhotoQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<PhotoQuery>(PhotoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'photo', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<PhotoQuery>(PhotoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'photo', 'query', variables);
     },
     photos(variables: PhotosQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PhotosQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<PhotosQuery>(PhotosDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'photos', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<PhotosQuery>(PhotosDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'photos', 'query', variables);
     }
   };
 }

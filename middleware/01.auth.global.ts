@@ -1,6 +1,5 @@
 import {SymbolKind} from "vscode-languageserver-types";
 import useMeStore from "~/stores/me-store";
-import gql from "graphql-tag";
 
 const exceptPaths: string[] = [
     '/auth/login',

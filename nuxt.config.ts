@@ -9,6 +9,7 @@ const runtimeConfig = {
   sessionSecret: process.env.SESSION_SECRET,
   public: {
     baseUrl: process.env.PUBLIC_BASE_URL,
+    fallbackLocale: process.env.PUBLIC_FALLBACK_LOCALE ? process.env.PUBLIC_FALLBACK_LOCALE :'ja',
   }
 }
 
@@ -52,7 +53,14 @@ export default defineNuxtConfig({
     storesDirs: ['./stores/**'],
   },
   i18n: {
-    locales: ['en', 'ja'],
+    detectBrowserLanguage: {
+      useCookie: true,
+    },
+    locales: [
+        {code:'en', name: 'English'},
+        {code:'ja', name:'日本語'}
+    ],
     defaultLocale: 'en',
+    strategy: 'no_prefix',
   }
 })
