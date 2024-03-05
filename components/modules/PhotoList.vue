@@ -1,16 +1,20 @@
 <template>
-  <div>
-    <v-card v-for="photoGroup in photosPerDateTimeOriginal" :key="photoGroup.id">
-      <v-card-title>{{ photoGroup.title }}</v-card-title>
-      <ul class="photo_list">
-        <li v-for="item in photoGroup.photos" :key="item.id" class="photo_list__item">
-          <img :src="item.thumbnailUrl" :alt="item.name" class="photo_list__item__img" @click="onPhotoItemClick(item)">
-        </li>
-      </ul>
-    </v-card>
-    <div v-intersect="onIntersectNext">
-    </div>
-  </div>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12" v-for="photoGroup in photosPerDateTimeOriginal" :key="photoGroup.id">
+        <v-card>
+          <v-card-title>{{ photoGroup.title }}</v-card-title>
+          <ul class="photo_list">
+            <li v-for="item in photoGroup.photos" :key="item.id" class="photo_list__item">
+              <img :src="item.thumbnailUrl" :alt="item.name" class="photo_list__item__img" @click="onPhotoItemClick(item)">
+            </li>
+          </ul>
+        </v-card>
+        <div v-intersect="onIntersectNext">
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup lang="ts">
@@ -90,6 +94,7 @@ function onIntersectNext(isIntersecting: boolean, _1: IntersectionObserverEntry[
   display: flex;
   flex-wrap: wrap;
   gap:10px;
+  margin: 13px auto;
 
   &__item {
     flex: 1 1 auto;
