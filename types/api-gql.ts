@@ -58,6 +58,7 @@ export type Mutation = {
   createOauthClient: OauthClient;
   createUser: User;
   indexingPhotos: Scalars['Boolean']['output'];
+  updateMe: User;
   uploadPhoto: PhotoUploadInfo;
 };
 
@@ -74,6 +75,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationIndexingPhotosArgs = {
   input?: InputMaybe<IndexingPhotosInput>;
+};
+
+
+export type MutationUpdateMeArgs = {
+  input: UpdateMeInput;
 };
 
 export type Node = {
@@ -222,6 +228,10 @@ export type QueryUsersArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type UpdateMeInput = {
+  name: Scalars['String']['input'];
+};
+
 export type User = Node & {
   __typename?: 'User';
   id: Scalars['ID']['output'];
@@ -296,6 +306,13 @@ export type PhotosQueryVariables = Exact<{
 
 export type PhotosQuery = { __typename?: 'Query', photos: { __typename?: 'PhotoPagination', pageInfo: { __typename?: 'PaginationInfo', limit: number, offset: number, page: number, paginationLength: number, hasNextPage: boolean, hasPreviousPage: boolean, count: number, totalCount: number }, nodes: Array<{ __typename?: 'Photo', id: string, name: string, dateTimeOriginal: string, thumbnailUrl: string, previewUrl: string }> } };
 
+export type UpdateMeMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+
+export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename?: 'User', id: string, userId: string, name: string } };
+
 
 export const CreateUserDocument = gql`
     mutation createUser($userId: String!, $name: String!, $password: String!) {
@@ -366,6 +383,15 @@ export const PhotosDocument = gql`
   }
 }
     `;
+export const UpdateMeDocument = gql`
+    mutation updateMe($name: String!) {
+  updateMe(input: {name: $name}) {
+    id
+    userId
+    name
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -391,6 +417,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     photos(variables: PhotosQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PhotosQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PhotosQuery>(PhotosDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'photos', 'query', variables);
+    },
+    updateMe(variables: UpdateMeMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateMeMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateMeMutation>(UpdateMeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateMe', 'mutation', variables);
     }
   };
 }

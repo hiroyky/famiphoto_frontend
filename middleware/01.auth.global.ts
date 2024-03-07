@@ -18,6 +18,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
     if (await meStore.isLoggedIn()) {
         return
     }
-
+    await meStore.getMe()
     return navigateTo('/auth/login')
 })

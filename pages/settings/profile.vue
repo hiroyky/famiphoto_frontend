@@ -12,15 +12,15 @@
                   <v-list>
                     <v-list-subheader>{{ $t('profile') }}</v-list-subheader>
                     <v-list-item>
-                      <v-text-field :label="$t('userId')" :disabled="true" :model-value="me?.userId"></v-text-field>
+                      <v-text-field :label="$t('userId')" :disabled="true" :model-value="meStore.userId"></v-text-field>
                     </v-list-item>
                     <v-list-item>
-                      <v-text-field :label="$t('displayName')" :model-value="me?.name"></v-text-field>
+                      <v-text-field :label="$t('displayName')" v-model="displayName"></v-text-field>
                     </v-list-item>
                   </v-list>
                   <v-card-actions>
                     <v-spacer/>
-                    <v-btn>{{ $t('apply') }}</v-btn>
+                    <v-btn @click="onApplyPersonalSetting">{{ $t('apply') }}</v-btn>
                     <v-spacer/>
                   </v-card-actions>
                 </v-form>
@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import {definePageMeta} from "#imports";
 import useMeStore from "~/stores/me-store";
+import {assertTSMethodSignature} from "@babel/types";
 
 const {t, locales, locale, setLocale } = useI18n({useScope: 'global'})
 const meStore = useMeStore()
@@ -70,10 +71,7 @@ definePageMeta({
   layout: "default"
 })
 
-const { data: me } = await useAsyncData(async () => {
-  await meStore.getMe()
-  return meStore.me
-})
+const displayName = ref(meStore.name)
 
 const localeSelection = computed(() => {
   return locales.value.map(l => ({
@@ -82,9 +80,13 @@ const localeSelection = computed(() => {
   }))
 })
 
+
 async function onApplyLocale(val: any) {
   await setLocale(val)
 }
 
+function onApplyPersonalSetting() {
+  meStore.updateMe(displayName.value)
+}
 
 </script>
