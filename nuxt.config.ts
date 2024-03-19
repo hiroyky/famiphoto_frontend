@@ -22,7 +22,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig,
   serverHandlers: [
-    { route: '/api/**', handler: '~/server/interfaces/http/app.ts' }
+    { route: '/api/**', handler: '~/server/interfaces/http/app.ts' },
+    { route: '/debug/**', handler: '~/server/interfaces/http/app.ts' }
   ],
   devtools: { enabled: true },
   experimental: {
