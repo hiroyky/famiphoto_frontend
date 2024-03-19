@@ -39,6 +39,14 @@ export type CreateUserInput = {
   userId: Scalars['String']['input'];
 };
 
+export type DateAggregationItem = {
+  __typename?: 'DateAggregationItem';
+  date: Scalars['Int']['output'];
+  month: Scalars['Int']['output'];
+  num: Scalars['Int']['output'];
+  year: Scalars['Int']['output'];
+};
+
 export type Edge = {
   cursor: Scalars['Cursor']['output'];
   node: Node;
@@ -178,6 +186,7 @@ export type PhotoUploadInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  aggregateDateTimeOriginal: Array<DateAggregationItem>;
   existUserId: Scalars['Boolean']['output'];
   gqlStatus: GqlStatus;
   me?: Maybe<User>;
@@ -187,6 +196,12 @@ export type Query = {
   photos: PhotoPagination;
   user?: Maybe<User>;
   users: UserPagination;
+};
+
+
+export type QueryAggregateDateTimeOriginalArgs = {
+  month?: InputMaybe<Scalars['Int']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -211,9 +226,12 @@ export type QueryPhotoFilesArgs = {
 
 
 export type QueryPhotosArgs = {
+  date?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
+  month?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -265,6 +283,26 @@ export enum UserStatus {
   Withdrawal = 'Withdrawal'
 }
 
+export type AggregateDateTimeOriginalDateQueryVariables = Exact<{
+  year: Scalars['Int']['input'];
+  month: Scalars['Int']['input'];
+}>;
+
+
+export type AggregateDateTimeOriginalDateQuery = { __typename?: 'Query', aggregateDateTimeOriginal: Array<{ __typename?: 'DateAggregationItem', year: number, month: number, date: number, num: number }> };
+
+export type AggregateDateTimeOriginalMonthQueryVariables = Exact<{
+  year: Scalars['Int']['input'];
+}>;
+
+
+export type AggregateDateTimeOriginalMonthQuery = { __typename?: 'Query', aggregateDateTimeOriginal: Array<{ __typename?: 'DateAggregationItem', year: number, month: number, num: number }> };
+
+export type AggregateDateTimeOriginalYearQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AggregateDateTimeOriginalYearQuery = { __typename?: 'Query', aggregateDateTimeOriginal: Array<{ __typename?: 'DateAggregationItem', year: number, num: number }> };
+
 export type CreateUserMutationVariables = Exact<{
   userId: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -314,6 +352,33 @@ export type UpdateMeMutationVariables = Exact<{
 export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename?: 'User', id: string, userId: string, name: string } };
 
 
+export const AggregateDateTimeOriginalDateDocument = gql`
+    query aggregateDateTimeOriginalDate($year: Int!, $month: Int!) {
+  aggregateDateTimeOriginal(year: $year, month: $month) {
+    year
+    month
+    date
+    num
+  }
+}
+    `;
+export const AggregateDateTimeOriginalMonthDocument = gql`
+    query aggregateDateTimeOriginalMonth($year: Int!) {
+  aggregateDateTimeOriginal(year: $year) {
+    year
+    month
+    num
+  }
+}
+    `;
+export const AggregateDateTimeOriginalYearDocument = gql`
+    query aggregateDateTimeOriginalYear {
+  aggregateDateTimeOriginal {
+    year
+    num
+  }
+}
+    `;
 export const CreateUserDocument = gql`
     mutation createUser($userId: String!, $name: String!, $password: String!) {
   createUser(input: {userId: $userId, name: $name, password: $password}) {
@@ -400,6 +465,15 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    aggregateDateTimeOriginalDate(variables: AggregateDateTimeOriginalDateQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AggregateDateTimeOriginalDateQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AggregateDateTimeOriginalDateQuery>(AggregateDateTimeOriginalDateDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'aggregateDateTimeOriginalDate', 'query', variables);
+    },
+    aggregateDateTimeOriginalMonth(variables: AggregateDateTimeOriginalMonthQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AggregateDateTimeOriginalMonthQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AggregateDateTimeOriginalMonthQuery>(AggregateDateTimeOriginalMonthDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'aggregateDateTimeOriginalMonth', 'query', variables);
+    },
+    aggregateDateTimeOriginalYear(variables?: AggregateDateTimeOriginalYearQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AggregateDateTimeOriginalYearQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AggregateDateTimeOriginalYearQuery>(AggregateDateTimeOriginalYearDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'aggregateDateTimeOriginalYear', 'query', variables);
+    },
     createUser(variables: CreateUserMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateUserMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createUser', 'mutation', variables);
     },
