@@ -46,6 +46,12 @@ export const usePhotoListStore = defineStore('photoList', {
             } catch(err) {
                 console.error(err)
             }
+        },
+
+        async aggregateDateTimeOriginalYear() {
+            const {client} = useGqlStore()
+            const res = await client.aggregateDateTimeOriginalYear()
+            return res.aggregateDateTimeOriginal
         }
     }
 })
