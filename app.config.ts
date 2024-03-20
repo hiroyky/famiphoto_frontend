@@ -1,3 +1,3 @@
 export default defineAppConfig({
-    AppName: "FAMIPHOTO"
+    AppName: "PHOTATON"
 })

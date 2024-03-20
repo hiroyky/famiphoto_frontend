@@ -10,8 +10,24 @@ interface State {
 }
 
 interface PhotoGetQuery {
+    year?: number
     limit: number
     offset: number
+}
+
+async function searchPhotos(q: PhotoGetQuery) {
+    const {client} = useGqlStore()
+
+    const res = await client.photos({
+        year: q.year,
+        limit: q.limit,
+        offset: q.offset,
+    })
+    const photos = res.photos.nodes
+        .map(item => item.thumbnailUrl === '' ? {...item, thumbnailUrl: '/no_thumbnail.png'} : item)
+        .map(item => item.previewUrl === '' ? {...item, previewUrl: '/no_thumbnail.ong'} : item)
+
+    return {photos, res}
 }
 
 export const usePhotoListStore = defineStore('photoList', {
@@ -31,16 +47,16 @@ export const usePhotoListStore = defineStore('photoList', {
     actions: {
         async getPhotos(q: PhotoGetQuery) {
             try {
-                const meStore = useMeStore()
-                const {client} = useGqlStore()
-
-                const res = await client.photos({
-                    limit: q.limit,
-                    offset: q.offset,
-                })
-                const photos = res.photos.nodes
-                    .map(item => item.thumbnailUrl === '' ? {...item, thumbnailUrl: '/no_thumbnail.png'} : item)
-                    .map(item => item.previewUrl === '' ? {...item, previewUrl: '/no_thumbnail.ong'} : item)
+                const {photos, res} = await searchPhotos(q)
+                this.photos = photos
+                this.paginationInfo = res.photos.pageInfo
+            } catch(err) {
+                console.error(err)
+            }
+        },
+        async appendPhotos(q: PhotoGetQuery) {
+            try {
+                const {photos, res} = await searchPhotos(q)
                 this.photos.push(...photos)
                 this.paginationInfo = res.photos.pageInfo
             } catch(err) {
@@ -51,6 +67,16 @@ export const usePhotoListStore = defineStore('photoList', {
         async aggregateDateTimeOriginalYear() {
             const {client} = useGqlStore()
             const res = await client.aggregateDateTimeOriginalYear()
+            return res.aggregateDateTimeOriginal
+        },
+        async aggregateDateTimeOriginalYearMonth(year: number) {
+            const {client} = useGqlStore()
+            const res = await client.aggregateDateTimeOriginalMonth({year})
+            return res.aggregateDateTimeOriginal
+        },
+        async aggregateDateTimeOriginalYearMonthDate(year: number, month: number) {
+            const {client} = useGqlStore()
+            const res = await client.aggregateDateTimeOriginalDate({year, month})
             return res.aggregateDateTimeOriginal
         }
     }

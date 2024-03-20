@@ -1,7 +1,7 @@
 <template>
-<v-list-group :value="modelValue.year">
+<v-list-group :value="year">
   <template v-slot:activator="{ props }">
-    <v-list-item v-bind="props">{{ modelValue.year }}年</v-list-item>
+    <v-list-item v-bind="props">{{ year }}年</v-list-item>
   </template>
 
   <v-list-group v-for="month in modelValue.months">
@@ -13,20 +13,16 @@
       {{ date }}日
     </v-list-item>
   </v-list-group>
+
 </v-list-group>
 </template>
 
 <script setup lang="ts">
 interface Prop{
-  modelValue: {
-    year: number
-    months: {
-      value: number
-      dates: number[]
-    }[]
-  }
+  year: number
+  months: number[]
 }
+const props = defineProps<Prop>()
 
-defineProps<Prop>()
 
 </script>

@@ -6,7 +6,7 @@
           <v-card-actions>
             <photo-download-button :files="photo.files" @download="onDownloadClick"></photo-download-button>
             <v-card-subtitle>{{ photo.name }}</v-card-subtitle>
-            <v-card-subtitle>{{ dateTimeOriginal(photo?.dateTimeOriginal) }}</v-card-subtitle>
+            <v-card-subtitle>{{ dateTimeOriginal(photo?.dateTimeOriginalT) }}</v-card-subtitle>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -40,7 +40,7 @@ function dateTimeOriginal(dateStr: string) {
     return ""
   }
   const date = new Date(dateStr)
-  return t('dateTimeOriginal', { year: date.getFullYear(), month: date.getMonth()+1, date: date.getDate(), hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds()  })
+  return t('dateTimeOriginalTimeStampString', { year: date.getFullYear(), month: date.getMonth()+1, date: date.getDate(), hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds()  })
 }
 
 function onDownloadClick( id: string, fileName: string ) {

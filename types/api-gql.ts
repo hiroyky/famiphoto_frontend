@@ -337,6 +337,9 @@ export type PhotoQueryVariables = Exact<{
 export type PhotoQuery = { __typename?: 'Query', photo?: { __typename?: 'Photo', id: string, name: string, previewUrl: string, dateTimeOriginal: string, files: Array<{ __typename?: 'PhotoFile', id: string, fileType: string, fileHash: string, fileName: string }> } | null };
 
 export type PhotosQueryVariables = Exact<{
+  year?: InputMaybe<Scalars['Int']['input']>;
+  month?: InputMaybe<Scalars['Int']['input']>;
+  date?: InputMaybe<Scalars['Int']['input']>;
   limit: Scalars['Int']['input'];
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
@@ -426,8 +429,8 @@ export const PhotoDocument = gql`
 }
     `;
 export const PhotosDocument = gql`
-    query photos($limit: Int!, $offset: Int) {
-  photos(limit: $limit, offset: $offset) {
+    query photos($year: Int, $month: Int, $date: Int, $limit: Int!, $offset: Int) {
+  photos(year: $year, month: $month, date: $date, limit: $limit, offset: $offset) {
     pageInfo {
       limit
       offset

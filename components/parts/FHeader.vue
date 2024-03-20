@@ -1,6 +1,6 @@
 <template>
   <v-app-bar>
-    <v-btn icon outlined class="mr-2" @click="onMenuClick">
+    <v-btn icon outlined class="mr-2" @click="onDrawerClick">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
     <v-btn icon outlined to="/" class="mr-2">
@@ -27,12 +27,18 @@
 defineProps({
   title: {
     type: String,
-    default: 'FAMIPHOTO',
+    default: useAppConfig().AppName,
   },
   userId: {
     type: String,
     default: '',
   },
 })
-function onMenuClick() {}
+
+const emit = defineEmits<{
+  drawerClick: []
+}>()
+function onDrawerClick() {
+  emit('drawerClick')
+}
 </script>
