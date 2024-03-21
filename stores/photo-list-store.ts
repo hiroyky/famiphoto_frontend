@@ -11,6 +11,8 @@ interface State {
 
 interface PhotoGetQuery {
     year?: number
+    month?: number
+    date?: number
     limit: number
     offset: number
 }
@@ -20,6 +22,8 @@ async function searchPhotos(q: PhotoGetQuery) {
 
     const res = await client.photos({
         year: q.year,
+        month: q.month,
+        date: q.date,
         limit: q.limit,
         offset: q.offset,
     })

@@ -2,21 +2,23 @@
     <nuxt-layout name="default">
       <nuxt-page />
       <template #navigation>
-        <date-tree-list
+        <data-tree-list
             :years="dateTimeOriginalYears"
-            :months="dateTimeOriginalMonths"
-            :dates="dateTimeOriginalDates"
-            @expand-year="onExpandYear"
-            @expand-month="onExpandMonth"
-        ></date-tree-list>
+           :months="dateTimeOriginalMonths"
+           :dates="dateTimeOriginalDates"
+           @expand-year="onExpandYear"
+           @expand-month="onExpandMonth"
+           @item-click="onDataTreeItemClick">
+        </data-tree-list>
       </template>
     </nuxt-layout>
 </template>
 
 <script setup lang="ts">
 
-import DateTreeList from "~/components/parts/DateTreeList.vue";
 import type {AggregateDate, AggregateMonth} from "~/types/api-gql-alias";
+import DataTreeList from "~/components/modules/DataTreeList.vue";
+import type {YearMonthDateNum} from "~/types/types";
 
 
 definePageMeta({
@@ -44,7 +46,7 @@ async function onExpandYear(year: number) {
     }
   })
 
-  await photoListStore.getPhotos({ limit: 20, offset: 0, year: year })
+  //await photoListStore.getPhotos({ limit: 20, offset: 0, year: year })
 }
 
 async function onExpandMonth(val: {year:number, month:number}) {
@@ -56,6 +58,17 @@ async function onExpandMonth(val: {year:number, month:number}) {
     } else {
       dateTimeOriginalDates.value.push(i)
     }
+  })
+}
+
+async function onDataTreeItemClick(val: YearMonthDateNum) {
+  console.log(val)
+  await photoListStore.getPhotos({
+    limit: 20,
+    offset: 0,
+    year: val.year,
+    month: val.month,
+    date: val.date
   })
 }
 
