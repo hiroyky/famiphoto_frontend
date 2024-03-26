@@ -15,13 +15,10 @@ import {usePhotoListStore} from "~/stores/photo-list-store";
 
 const photoListStore = usePhotoListStore()
 
-const offset = ref(0)
-const limit = 20
-
 useAsyncData(async () => {
-  await photoListStore.appendPhotos({  limit: 20 , offset: offset.value })
+  await photoListStore.getPhotos({})
   return photoListStore.photos
-}, { watch: [ offset ] })
+})
 
 const photos = computed(() => photoListStore.photos)
 
@@ -30,7 +27,7 @@ function onPhotoClick(id: string) {
 }
 
 function onIntersectNext() {
-  offset.value += limit
+  photoListStore.appendPhotos()
 }
 
 </script>
