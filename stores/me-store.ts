@@ -9,6 +9,12 @@ const useMeStore = defineStore('me', {
         me: null
     }),
     getters: {
+        userId: (state) => {
+            return state.me ? state.me.userId : ''
+        },
+        name: (state) => {
+            return state.me ? state.me.name : ''
+        }
     },
     actions: {
         async getMe() {
@@ -26,6 +32,11 @@ const useMeStore = defineStore('me', {
             }
             await this.getMe()
             return this.me !== null
+        },
+        async updateMe(name: string) {
+            const { client } = useGqlStore()
+            const res = await client.updateMe({name})
+            this.me = res.updateMe
         },
         clear() {
             this.me = null

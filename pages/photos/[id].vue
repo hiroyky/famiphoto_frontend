@@ -25,6 +25,7 @@ import {usePhotoStore} from "~/stores/photo-store";
 import {useApiStore} from "~/stores/api-store";
 import PhotoDownloadButton from "~/components/parts/PhotoDownloadButton.vue";
 
+const { t } = useI18n({useScope: 'global'})
 const route = useRoute()
 const id = route.params.id as string
 
@@ -39,7 +40,7 @@ function dateTimeOriginal(dateStr: string) {
     return ""
   }
   const date = new Date(dateStr)
-  return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日${date.getHours()}時${date.getMinutes()}分${date.getSeconds()}秒`
+  return t('dateTimeOriginalTimeStampString', { year: date.getFullYear(), month: date.getMonth()+1, date: date.getDate(), hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds()  })
 }
 
 function onDownloadClick( id: string, fileName: string ) {

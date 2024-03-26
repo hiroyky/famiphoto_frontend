@@ -39,6 +39,14 @@ export type CreateUserInput = {
   userId: Scalars['String']['input'];
 };
 
+export type DateAggregationItem = {
+  __typename?: 'DateAggregationItem';
+  date: Scalars['Int']['output'];
+  month: Scalars['Int']['output'];
+  num: Scalars['Int']['output'];
+  year: Scalars['Int']['output'];
+};
+
 export type Edge = {
   cursor: Scalars['Cursor']['output'];
   node: Node;
@@ -58,6 +66,7 @@ export type Mutation = {
   createOauthClient: OauthClient;
   createUser: User;
   indexingPhotos: Scalars['Boolean']['output'];
+  updateMe: User;
   uploadPhoto: PhotoUploadInfo;
 };
 
@@ -74,6 +83,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationIndexingPhotosArgs = {
   input?: InputMaybe<IndexingPhotosInput>;
+};
+
+
+export type MutationUpdateMeArgs = {
+  input: UpdateMeInput;
 };
 
 export type Node = {
@@ -172,6 +186,7 @@ export type PhotoUploadInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  aggregateDateTimeOriginal: Array<DateAggregationItem>;
   existUserId: Scalars['Boolean']['output'];
   gqlStatus: GqlStatus;
   me?: Maybe<User>;
@@ -181,6 +196,12 @@ export type Query = {
   photos: PhotoPagination;
   user?: Maybe<User>;
   users: UserPagination;
+};
+
+
+export type QueryAggregateDateTimeOriginalArgs = {
+  month?: InputMaybe<Scalars['Int']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -205,9 +226,12 @@ export type QueryPhotoFilesArgs = {
 
 
 export type QueryPhotosArgs = {
+  date?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
+  month?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -220,6 +244,10 @@ export type QueryUsersArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdateMeInput = {
+  name: Scalars['String']['input'];
 };
 
 export type User = Node & {
@@ -255,6 +283,26 @@ export enum UserStatus {
   Withdrawal = 'Withdrawal'
 }
 
+export type AggregateDateTimeOriginalDateQueryVariables = Exact<{
+  year: Scalars['Int']['input'];
+  month: Scalars['Int']['input'];
+}>;
+
+
+export type AggregateDateTimeOriginalDateQuery = { __typename?: 'Query', aggregateDateTimeOriginal: Array<{ __typename?: 'DateAggregationItem', year: number, month: number, date: number, num: number }> };
+
+export type AggregateDateTimeOriginalMonthQueryVariables = Exact<{
+  year: Scalars['Int']['input'];
+}>;
+
+
+export type AggregateDateTimeOriginalMonthQuery = { __typename?: 'Query', aggregateDateTimeOriginal: Array<{ __typename?: 'DateAggregationItem', year: number, month: number, num: number }> };
+
+export type AggregateDateTimeOriginalYearQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AggregateDateTimeOriginalYearQuery = { __typename?: 'Query', aggregateDateTimeOriginal: Array<{ __typename?: 'DateAggregationItem', year: number, num: number }> };
+
 export type CreateUserMutationVariables = Exact<{
   userId: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -289,6 +337,9 @@ export type PhotoQueryVariables = Exact<{
 export type PhotoQuery = { __typename?: 'Query', photo?: { __typename?: 'Photo', id: string, name: string, previewUrl: string, dateTimeOriginal: string, files: Array<{ __typename?: 'PhotoFile', id: string, fileType: string, fileHash: string, fileName: string }> } | null };
 
 export type PhotosQueryVariables = Exact<{
+  year?: InputMaybe<Scalars['Int']['input']>;
+  month?: InputMaybe<Scalars['Int']['input']>;
+  date?: InputMaybe<Scalars['Int']['input']>;
   limit: Scalars['Int']['input'];
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
@@ -296,7 +347,41 @@ export type PhotosQueryVariables = Exact<{
 
 export type PhotosQuery = { __typename?: 'Query', photos: { __typename?: 'PhotoPagination', pageInfo: { __typename?: 'PaginationInfo', limit: number, offset: number, page: number, paginationLength: number, hasNextPage: boolean, hasPreviousPage: boolean, count: number, totalCount: number }, nodes: Array<{ __typename?: 'Photo', id: string, name: string, dateTimeOriginal: string, thumbnailUrl: string, previewUrl: string }> } };
 
+export type UpdateMeMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
 
+
+export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename?: 'User', id: string, userId: string, name: string } };
+
+
+export const AggregateDateTimeOriginalDateDocument = gql`
+    query aggregateDateTimeOriginalDate($year: Int!, $month: Int!) {
+  aggregateDateTimeOriginal(year: $year, month: $month) {
+    year
+    month
+    date
+    num
+  }
+}
+    `;
+export const AggregateDateTimeOriginalMonthDocument = gql`
+    query aggregateDateTimeOriginalMonth($year: Int!) {
+  aggregateDateTimeOriginal(year: $year) {
+    year
+    month
+    num
+  }
+}
+    `;
+export const AggregateDateTimeOriginalYearDocument = gql`
+    query aggregateDateTimeOriginalYear {
+  aggregateDateTimeOriginal {
+    year
+    num
+  }
+}
+    `;
 export const CreateUserDocument = gql`
     mutation createUser($userId: String!, $name: String!, $password: String!) {
   createUser(input: {userId: $userId, name: $name, password: $password}) {
@@ -344,8 +429,8 @@ export const PhotoDocument = gql`
 }
     `;
 export const PhotosDocument = gql`
-    query photos($limit: Int!, $offset: Int) {
-  photos(limit: $limit, offset: $offset) {
+    query photos($year: Int, $month: Int, $date: Int, $limit: Int!, $offset: Int) {
+  photos(year: $year, month: $month, date: $date, limit: $limit, offset: $offset) {
     pageInfo {
       limit
       offset
@@ -366,31 +451,52 @@ export const PhotosDocument = gql`
   }
 }
     `;
+export const UpdateMeDocument = gql`
+    mutation updateMe($name: String!) {
+  updateMe(input: {name: $name}) {
+    id
+    userId
+    name
+  }
+}
+    `;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
 
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, variables) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    aggregateDateTimeOriginalDate(variables: AggregateDateTimeOriginalDateQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AggregateDateTimeOriginalDateQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AggregateDateTimeOriginalDateQuery>(AggregateDateTimeOriginalDateDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'aggregateDateTimeOriginalDate', 'query', variables);
+    },
+    aggregateDateTimeOriginalMonth(variables: AggregateDateTimeOriginalMonthQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AggregateDateTimeOriginalMonthQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AggregateDateTimeOriginalMonthQuery>(AggregateDateTimeOriginalMonthDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'aggregateDateTimeOriginalMonth', 'query', variables);
+    },
+    aggregateDateTimeOriginalYear(variables?: AggregateDateTimeOriginalYearQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AggregateDateTimeOriginalYearQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AggregateDateTimeOriginalYearQuery>(AggregateDateTimeOriginalYearDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'aggregateDateTimeOriginalYear', 'query', variables);
+    },
     createUser(variables: CreateUserMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreateUserMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createUser', 'mutation');
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateUserMutation>(CreateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createUser', 'mutation', variables);
     },
     existUserId(variables: ExistUserIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ExistUserIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<ExistUserIdQuery>(ExistUserIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'existUserId', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<ExistUserIdQuery>(ExistUserIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'existUserId', 'query', variables);
     },
     gqlStatus(variables?: GqlStatusQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GqlStatusQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GqlStatusQuery>(GqlStatusDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'gqlStatus', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GqlStatusQuery>(GqlStatusDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'gqlStatus', 'query', variables);
     },
     me(variables?: MeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<MeQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<MeQuery>(MeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'me', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<MeQuery>(MeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'me', 'query', variables);
     },
     photo(variables: PhotoQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PhotoQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<PhotoQuery>(PhotoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'photo', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<PhotoQuery>(PhotoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'photo', 'query', variables);
     },
     photos(variables: PhotosQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PhotosQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<PhotosQuery>(PhotosDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'photos', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<PhotosQuery>(PhotosDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'photos', 'query', variables);
+    },
+    updateMe(variables: UpdateMeMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateMeMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateMeMutation>(UpdateMeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateMe', 'mutation', variables);
     }
   };
 }

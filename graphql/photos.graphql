@@ -1,8 +1,14 @@
 query photos(
+    $year: Int,
+    $month: Int,
+    $date: Int,
     $limit: Int!,
     $offset: Int
 ) {
     photos(
+        year: $year,
+        month: $month,
+        date: $date,
         limit: $limit,
         offset: $offset
     ) {
