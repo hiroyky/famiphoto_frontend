@@ -73,7 +73,6 @@ export const usePhotoListStore = defineStore('photoList', {
             }
 
             try {
-                console.log( this.paginationInfo.offset + this.paginationInfo.limit)
                 const {photos, res} = await searchPhotos(this.photoQuery, { limit: defaultLimit, offset: this.paginationInfo.offset + this.paginationInfo.limit})
                 this.photos.push(...photos)
                 this.paginationInfo = res.photos.pageInfo

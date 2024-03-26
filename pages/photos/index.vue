@@ -16,8 +16,9 @@ import {usePhotoListStore} from "~/stores/photo-list-store";
 const photoListStore = usePhotoListStore()
 
 useAsyncData(async () => {
-  await photoListStore.getPhotos({})
-  return photoListStore.photos
+  if (photoListStore.photos.length === 0) {
+    await photoListStore.getPhotos({})
+  }
 })
 
 const photos = computed(() => photoListStore.photos)

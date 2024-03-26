@@ -19,13 +19,10 @@
 
 <script setup lang="ts">
 
-import type {PhotosQuery} from "~/types/api-gql";
-import type {Ref} from "vue";
 import type {PhotoList} from "~/types/api-gql-alias";
 
 interface Props {
   value: PhotoList | null
-  loading?: boolean
 }
 
 interface PhotoGroup {
@@ -36,7 +33,6 @@ interface PhotoGroup {
 
 const props = withDefaults(defineProps<Props>(), {
   value: () => [],
-  loading: false
 })
 
 const emit =defineEmits<{
