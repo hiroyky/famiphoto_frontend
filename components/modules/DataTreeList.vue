@@ -2,7 +2,7 @@
   <v-list density="compact" :nav="false" @click:open="onExpandCollapse">
     <v-list-item><slot name="title">{{ $t('dateTimeOriginal') }}</slot></v-list-item>
 
-    <tree-list-item :model-value="year" v-for="year in years" :key="year.year" @click="onItemClick">
+    <tree-list-item :model-value="year" v-for="year in years" :key="year.year" @click="onItemClick" :terminate="year.year===0">
       <template #title>{{ displayYear(year) }}</template>
       <template #count>{{year.num}}</template>
 

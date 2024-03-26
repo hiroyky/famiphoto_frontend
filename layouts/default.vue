@@ -3,7 +3,7 @@
     <alert-snackbar />
     <f-header @drawer-click="onHeadDrawerClick" />
     <v-main>
-      <v-navigation-drawer :model-value="navigationDrawer">
+      <v-navigation-drawer v-model="navigationDrawer">
         <slot name="navigation" />
       </v-navigation-drawer>
       <slot />
