@@ -18,12 +18,10 @@ import FHeader from "~/components/parts/FHeader.vue";
 import FFooter from "~/components/parts/FFooter.vue";
 import AlertSnackbar from "~/components/modules/AlertSnackbar.vue";
 
-const navigationDrawer = ref(true)
-
+const navigationDrawer = ref<boolean | null>(null)
 
 function onHeadDrawerClick() {
   navigationDrawer.value = !navigationDrawer.value
 }
 
 </script>
-
