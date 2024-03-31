@@ -7,6 +7,9 @@
       <v-icon>mdi-home</v-icon>
     </v-btn>
     <v-toolbar-title :text="title" />
+
+    <v-btn :icon="true" to="/upload"><v-icon>mdi-upload</v-icon></v-btn>
+
     <v-menu>
       <template v-slot:activator="{props}">
         <v-btn icon v-bind="props"><v-icon>mdi-account</v-icon></v-btn>
@@ -20,6 +23,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
+
   </v-app-bar>
 </template>
 

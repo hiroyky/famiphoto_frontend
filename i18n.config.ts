@@ -19,7 +19,8 @@ export default defineI18nConfig(() => ({
             xYear: '{year}',
             xMonth: (ctx: MessageContext) => `${enMonthShortName(ctx.named('month'))}`,
             xMonthDate: (ctx: MessageContext) => `${enMonthShortName(ctx.named('month'))} ${ctx.named('date')}`,
-            xDate: '{date}'
+            xDate: '{date}',
+            uploadPhotos: 'Upload Photos',
         },
         ja: {
             dateTimeOriginalTimeStampString: '{year}年{month}月{date}日 {hour}時{minute}分{second}秒',
@@ -36,7 +37,8 @@ export default defineI18nConfig(() => ({
             xYear: '{year}年',
             xMonth: '{month}月',
             xMonthDate: '{month}月{date}日',
-            xDate: '{date}日'
+            xDate: '{date}日',
+            uploadPhotos: '写真をアップロード',
         },
     }
 }))
