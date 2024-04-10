@@ -19,11 +19,18 @@
 import type {AggregateDate, AggregateMonth} from "~/types/api-gql-alias";
 import DataTreeList from "~/components/modules/DataTreeList.vue";
 import type {YearMonthDateNum} from "~/types/types";
+import {definePageMeta} from "#imports";
+import {defineHead} from "zhead";
 
 
 definePageMeta({
   layout: false,
 })
+
+useHead({
+  title: useAppConfig().AppName,
+})
+
 
 const photoListStore = usePhotoListStore()
 

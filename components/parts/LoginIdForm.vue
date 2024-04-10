@@ -14,7 +14,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn :disabled="!validate" type="submit">
+        <v-btn :disabled="!validate" type="submit" color="primary">
           次へ
         </v-btn>
       </v-card-actions>

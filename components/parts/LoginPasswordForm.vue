@@ -24,7 +24,7 @@
         </v-btn>
         <v-spacer />
         <v-btn :disabled="!validate" type="submit">
-          <slot name="nextButton">
+          <slot name="nextButton" color="primary">
             ログイン
           </slot>
         </v-btn>
