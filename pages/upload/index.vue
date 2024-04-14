@@ -18,7 +18,14 @@
                     </template>
                   </v-list-item>
                 </v-list>
-                <photo-upload-form />
+                <photo-upload-form @update:model-value="onCommit" />
+
+                <v-list>
+                  <v-list-item v-for="item in photoUploadStore.queue" :key="item.file">
+                    <template #title>{{ item.file.name }}</template>
+                    <template #subtitle>{{ item.status }}</template>
+                  </v-list-item>
+                </v-list>
               </v-card>
             </v-col>
           </v-row>
@@ -30,11 +37,20 @@
 </template>
 
 <script lang="ts" setup>
-const {t } = useI18n({useScope: 'global'})
-import PhotoUploadForm from "~/components/parts/photo-upload-form.vue";
+import {usePhotoUploadStore} from "~/stores/photo-upload-store";
+
+const { t } = useI18n({useScope: 'global'})
+import PhotoUploadForm from "~/components/parts/photoUploadForm.vue";
 
 useHead({
   title: `${t("uploadPhotos")} - ${useAppConfig().AppName}`,
 })
+
+const photoUploadStore = usePhotoUploadStore()
+
+function onCommit(files: File[]) {
+  console.log('on commit',files)
+  photoUploadStore.enqueueToUploadFiles(files)
+}
 
 </script>

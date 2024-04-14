@@ -35,6 +35,18 @@ export  const useApiStore = defineStore('api', {
         },
         downloadUrl(fileId: string) {
             return `/api/download/files/${fileId}`
+        },
+
+        async uploadFile(file: File, uploadURL: string) {
+            const fd=new FormData()
+            fd.append("file", file)
+            const res = await fetch(uploadURL, {
+                method: 'POST',
+                body: fd,
+            })
+            if (!res.ok) {
+                throw await ApiError.createInstanceFromRes(res)
+            }
         }
     }
 })

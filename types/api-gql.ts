@@ -354,6 +354,11 @@ export type UpdateMeMutationVariables = Exact<{
 
 export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename?: 'User', id: string, userId: string, name: string } };
 
+export type UploadPhotoMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UploadPhotoMutation = { __typename?: 'Mutation', uploadPhoto: { __typename?: 'PhotoUploadInfo', uploadUrl: string, expireAt: number } };
+
 
 export const AggregateDateTimeOriginalDateDocument = gql`
     query aggregateDateTimeOriginalDate($year: Int!, $month: Int!) {
@@ -460,6 +465,14 @@ export const UpdateMeDocument = gql`
   }
 }
     `;
+export const UploadPhotoDocument = gql`
+    mutation uploadPhoto {
+  uploadPhoto {
+    uploadUrl
+    expireAt
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -497,6 +510,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     updateMe(variables: UpdateMeMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateMeMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateMeMutation>(UpdateMeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateMe', 'mutation', variables);
+    },
+    uploadPhoto(variables?: UploadPhotoMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UploadPhotoMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UploadPhotoMutation>(UploadPhotoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'uploadPhoto', 'mutation', variables);
     }
   };
 }
