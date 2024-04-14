@@ -8,7 +8,14 @@
     </v-btn>
     <v-toolbar-title :text="title" />
 
-    <v-btn :icon="true" to="/upload"><v-icon>mdi-upload</v-icon></v-btn>
+    <progress-nav-button
+        :icon="true"
+        default-to="/upload"
+        loading-to="/upload/progress"
+        :loading="photoUploading"
+    >
+      <v-icon>mdi-upload</v-icon>
+    </progress-nav-button>
 
     <v-menu>
       <template v-slot:activator="{props}">
@@ -28,6 +35,9 @@
 </template>
 
 <script setup lang="ts">
+import ProgressNavButton from "~/components/parts/ProgressNavButton.vue";
+import {usePhotoUploadStore} from "~/stores/photo-upload-store";
+
 defineProps({
   title: {
     type: String,
@@ -45,4 +55,9 @@ const emit = defineEmits<{
 function onDrawerClick() {
   emit('drawerClick')
 }
+
+const photoUploadStore = usePhotoUploadStore()
+
+const photoUploading = computed(() => photoUploadStore.progressing)
+
 </script>

@@ -1,12 +1,12 @@
 
 interface State {
-    queue: FileItem[]
-    processing: boolean
+    queue: FileUploadQueueItem[]
+    progressing: boolean
 }
 
 type UploadStatus = 'standby' | 'progressing'| 'completed' | 'failed'
 
-interface FileItem {
+export interface FileUploadQueueItem {
     file: File
     status: UploadStatus
 }
@@ -16,12 +16,12 @@ const parallelNum = 2
 export const usePhotoUploadStore = defineStore('photoUpload', {
     state: (): State => ({
         queue: [],
-        processing: false,
+        progressing: false,
     }),
 
     actions: {
         enqueueToUploadFiles(files: File[]) {
-            const fileItems: FileItem[] = files.map(f => ({
+            const fileItems: FileUploadQueueItem[] = files.map(f => ({
                 file: f,
                 status: 'standby',
             }))
@@ -34,17 +34,18 @@ export const usePhotoUploadStore = defineStore('photoUpload', {
         async _uploadQueuing() {
             const standbyFiles = filterStandbyFiles(this.queue)
             if (standbyFiles.length===0) {
-                this.processing = false
+                this.progressing = false
                 return
             }
 
-            this.processing = true
+            this.progressing = true
+            console.log('progresing', this.progressing)
             const { client } = useGqlStore()
             const apiStore = useApiStore()
 
             await Promise.all(standbyFiles.slice(0, parallelNum).map(async (i) => {
                 try {
-                    console.log(i.file.name)
+                    i.status='progressing'
                     const res = await client.uploadPhoto()
                     await apiStore.uploadFile(i.file, res.uploadPhoto.uploadUrl)
                     i.status = 'completed'
@@ -59,6 +60,6 @@ export const usePhotoUploadStore = defineStore('photoUpload', {
     },
 })
 
-function filterStandbyFiles(queue: FileItem[]): FileItem[] {
+function filterStandbyFiles(queue: FileUploadQueueItem[]): FileUploadQueueItem[] {
     return queue.filter(m => m.status === 'standby')
 }

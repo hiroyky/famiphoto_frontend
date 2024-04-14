@@ -11,7 +11,7 @@
                 <v-list>
                   <v-list-item>
                     <template #title>
-                      <v-text-field label="保存先ディレクトリ" model-value="/var/xxx/hgoe/fuga" :disabled="true"></v-text-field>
+                      <v-text-field :label="t('destinationDirectory')" model-value="/var/xxx/hgoe/fuga" :disabled="true"></v-text-field>
                     </template>
                     <template #subtitle>
                       ディレクトリの日付は撮影日時です。撮影日時が不明の場合はアップロード日時です。
@@ -49,8 +49,8 @@ useHead({
 const photoUploadStore = usePhotoUploadStore()
 
 function onCommit(files: File[]) {
-  console.log('on commit',files)
   photoUploadStore.enqueueToUploadFiles(files)
+  navigateTo('/upload/progress')
 }
 
 </script>

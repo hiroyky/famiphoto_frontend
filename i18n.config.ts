@@ -24,6 +24,8 @@ export default defineI18nConfig(() => ({
             upload: 'Upload',
             selectPhotos: 'Select Photos',
             cancel: 'Cancel',
+            destinationDirectory: 'Destination directory',
+            noUploadingProcesses: 'No uploading processes now.',
         },
         ja: {
             dateTimeOriginalTimeStampString: '{year}年{month}月{date}日 {hour}時{minute}分{second}秒',
@@ -45,6 +47,8 @@ export default defineI18nConfig(() => ({
             upload: 'アップロード',
             selectPhotos: '写真を選択',
             cancel: 'キャンセル',
+            destinationDirectory: '保存先ディレクトリ',
+            noUploadingProcesses: '現在、アップロード処理はありません。',
         },
     }
 }))
