@@ -26,6 +26,7 @@ export default defineI18nConfig(() => ({
             cancel: 'Cancel',
             destinationDirectory: 'Destination directory',
             noUploadingProcesses: 'No uploading processes now.',
+            signOut: 'Sign out',
         },
         ja: {
             dateTimeOriginalTimeStampString: '{year}年{month}月{date}日 {hour}時{minute}分{second}秒',
@@ -49,6 +50,7 @@ export default defineI18nConfig(() => ({
             cancel: 'キャンセル',
             destinationDirectory: '保存先ディレクトリ',
             noUploadingProcesses: '現在、アップロード処理はありません。',
+            signOut: 'ログアウト'
         },
     }
 }))

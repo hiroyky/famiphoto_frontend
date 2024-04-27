@@ -8,16 +8,6 @@
           <v-row>
             <v-col>
               <v-card>
-                <v-list>
-                  <v-list-item>
-                    <template #title>
-                      <v-text-field :label="t('destinationDirectory')" model-value="/var/xxx/hgoe/fuga" :disabled="true"></v-text-field>
-                    </template>
-                    <template #subtitle>
-                      ディレクトリの日付は撮影日時です。撮影日時が不明の場合はアップロード日時です。
-                    </template>
-                  </v-list-item>
-                </v-list>
                 <photo-upload-form @update:model-value="onCommit" />
 
                 <v-list>
