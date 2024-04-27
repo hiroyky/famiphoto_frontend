@@ -226,12 +226,12 @@ export type QueryPhotoFilesArgs = {
 
 
 export type QueryPhotosArgs = {
-  date?: InputMaybe<Scalars['Int']['input']>;
+  dateTimeOriginalDate?: InputMaybe<Scalars['Int']['input']>;
+  dateTimeOriginalMonth?: InputMaybe<Scalars['Int']['input']>;
+  dateTimeOriginalYear?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
-  month?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  year?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -435,7 +435,13 @@ export const PhotoDocument = gql`
     `;
 export const PhotosDocument = gql`
     query photos($year: Int, $month: Int, $date: Int, $limit: Int!, $offset: Int) {
-  photos(year: $year, month: $month, date: $date, limit: $limit, offset: $offset) {
+  photos(
+    dateTimeOriginalYear: $year
+    dateTimeOriginalMonth: $month
+    dateTimeOriginalDate: $date
+    limit: $limit
+    offset: $offset
+  ) {
     pageInfo {
       limit
       offset
