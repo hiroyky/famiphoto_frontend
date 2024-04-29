@@ -5,7 +5,7 @@ export default defineI18nConfig(() => ({
     locale: 'en',
     messages: {
         en: {
-            dateTimeOriginalTimeStampString: '{month}-{date} {year}　{hour}:{minute}:{second}',
+            dateTimeOriginalTimeStampString: (ctx: MessageContext) => `${enMonthShortName(ctx.named('month'))}-${ctx.named('date')} ${ctx.named('year')} ${ctx.named('hour')}:${ctx.named('minute')}:${ctx.named('second')}`,
             download: 'Download',
             userId: 'User ID',
             displayName: 'Display Name',
@@ -20,6 +20,7 @@ export default defineI18nConfig(() => ({
             xMonth: (ctx: MessageContext) => `${enMonthShortName(ctx.named('month'))}`,
             xMonthDate: (ctx: MessageContext) => `${enMonthShortName(ctx.named('month'))} ${ctx.named('date')}`,
             xDate: '{date}',
+            xYearMonthDate: (ctx: MessageContext) => `${enMonthShortName(ctx.named('month'))}-${ctx.named('date')} ${ctx.named('year')}`,
             uploadPhotos: 'Upload Photos',
             upload: 'Upload',
             selectPhotos: 'Select Photos',
@@ -44,6 +45,7 @@ export default defineI18nConfig(() => ({
             xMonth: '{month}月',
             xMonthDate: '{month}月{date}日',
             xDate: '{date}日',
+            xYearMonthDate: (ctx: MessageContext) => `${ctx.named('year')}年${ctx.named('month')}月${ctx.named('date')}日`,
             uploadPhotos: '写真をアップロード',
             upload: 'アップロード',
             selectPhotos: '写真を選択',

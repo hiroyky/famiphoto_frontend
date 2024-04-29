@@ -20,6 +20,7 @@
 <script setup lang="ts">
 
 import type {PhotoList} from "~/types/api-gql-alias";
+const { t } = useI18n({useScope: 'global'})
 
 interface Props {
   value: PhotoList | null
@@ -51,7 +52,13 @@ const photosPerDateTimeOriginal = computed(() => {
       const dateTimeOriginal = new Date(photos[i].dateTimeOriginal)
       const group: PhotoGroup = {
         id: dateTimeOriginal.toDateString(),
-        title: `${dateTimeOriginal.getFullYear()}年${dateTimeOriginal.getMonth()+1}月${dateTimeOriginal.getDate()}日`,
+        title: t(
+            'xYearMonthDate', {
+              year: dateTimeOriginal.getFullYear(),
+              month: dateTimeOriginal.getMonth() + 1,
+              date: dateTimeOriginal.getDate()
+            }
+        ),
         photos: [ ]
       }
       groups.push(group)

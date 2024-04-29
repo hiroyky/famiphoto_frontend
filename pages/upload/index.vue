@@ -9,13 +9,6 @@
             <v-col>
               <v-card>
                 <photo-upload-form @update:model-value="onCommit" />
-
-                <v-list>
-                  <v-list-item v-for="item in photoUploadStore.queue" :key="item.file">
-                    <template #title>{{ item.file.name }}</template>
-                    <template #subtitle>{{ item.status }}</template>
-                  </v-list-item>
-                </v-list>
               </v-card>
             </v-col>
           </v-row>
