@@ -1,11 +1,7 @@
 <template>
-  <v-app-bar>
-    <v-btn icon outlined class="mr-2" @click="onDrawerClick">
-      <v-icon>mdi-menu</v-icon>
-    </v-btn>
-    <v-btn icon outlined to="/" class="mr-2">
-      <v-icon>mdi-home</v-icon>
-    </v-btn>
+  <v-app-bar prominent>
+    <v-app-bar-nav-icon v-if="navBar" @click="navigation.toggle"></v-app-bar-nav-icon>
+    <v-btn icon="mdi-home" outlined to="/" />
     <v-toolbar-title :text="title" />
 
     <progress-nav-button
@@ -47,17 +43,17 @@ defineProps({
     type: String,
     default: '',
   },
+  navBar: {
+    type: Boolean,
+    default: true,
+  }
 })
 
-const emit = defineEmits<{
-  drawerClick: []
-}>()
-function onDrawerClick() {
-  emit('drawerClick')
-}
 
 const photoUploadStore = usePhotoUploadStore()
-
 const photoUploading = computed(() => photoUploadStore.progressing)
+
+const navigation = useNavigation()
+
 
 </script>

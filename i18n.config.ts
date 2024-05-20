@@ -52,7 +52,7 @@ export default defineI18nConfig(() => ({
             cancel: 'キャンセル',
             destinationDirectory: '保存先ディレクトリ',
             noUploadingProcesses: '現在、アップロード処理はありません。',
-            signOut: 'ログアウト'
+            signOut: 'ログアウト',
         },
     }
 }))

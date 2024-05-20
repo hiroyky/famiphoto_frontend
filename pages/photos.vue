@@ -1,17 +1,17 @@
 <template>
-    <nuxt-layout name="default">
-      <nuxt-page />
-      <template #navigation>
-        <data-tree-list
-            :years="dateTimeOriginalYears"
-           :months="dateTimeOriginalMonths"
-           :dates="dateTimeOriginalDates"
-           @expand-year="onExpandYear"
-           @expand-month="onExpandMonth"
-           @item-click="onDataTreeItemClick">
-        </data-tree-list>
-      </template>
-    </nuxt-layout>
+  <div>
+    <navigation>
+      <data-tree-list
+        :years="dateTimeOriginalYears"
+        :months="dateTimeOriginalMonths"
+        :dates="dateTimeOriginalDates"
+        @expand-year="onExpandYear"
+        @expand-month="onExpandMonth"
+        @item-click="onDataTreeItemClick">
+      </data-tree-list>
+    </navigation>
+    <nuxt-page />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -19,12 +19,10 @@
 import type {AggregateDate, AggregateMonth} from "~/types/api-gql-alias";
 import DataTreeList from "~/components/modules/DataTreeList.vue";
 import type {YearMonthDateNum} from "~/types/types";
-import {definePageMeta} from "#imports";
-import {defineHead} from "zhead";
-
+import Navigation from "~/components/parts/Navigation.vue";
 
 definePageMeta({
-  layout: false,
+  layout: 'photos'
 })
 
 useHead({
