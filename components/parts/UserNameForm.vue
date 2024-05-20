@@ -21,7 +21,7 @@
           戻る
         </v-btn>
         <v-spacer />
-        <v-btn :disabled="!validate" @click="$emit('commit')" color="primary">
+        <v-btn :disabled="!validate" @click="$emit('commit')" color="primary" variant="elevated">
           次へ
         </v-btn>
       </v-card-actions>
