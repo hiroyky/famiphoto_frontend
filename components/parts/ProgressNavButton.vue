@@ -1,5 +1,5 @@
 <template>
-  <v-btn :icon="icon" :to="to">
+  <v-btn :icon="icon" :to="to" :active="false">
     <slot v-if="!loading"></slot>
     <slot name="loading" v-if="loading">
       <v-progress-circular indeterminate width="2">

@@ -1,8 +1,10 @@
 <template>
   <v-app-bar prominent>
     <v-app-bar-nav-icon v-if="navBar" @click="navigation.toggle"></v-app-bar-nav-icon>
-    <v-btn icon="mdi-home" outlined to="/" />
+    <v-btn icon="mdi-home" outlined :active="false" to="/" />
     <v-toolbar-title :text="title" />
+
+    <v-btn icon="mdi-cog-outline" outlined to="/settings/app" :active="false"></v-btn>
 
     <progress-nav-button
         :icon="true"
