@@ -23,7 +23,7 @@
           戻る
         </v-btn>
         <v-spacer />
-        <v-btn :disabled="!validate" type="submit">
+        <v-btn :disabled="!validate" type="submit" variant="elevated" color="primary">
           <slot name="nextButton">
             ログイン
           </slot>

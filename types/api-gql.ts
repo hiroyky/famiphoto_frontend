@@ -226,12 +226,12 @@ export type QueryPhotoFilesArgs = {
 
 
 export type QueryPhotosArgs = {
-  date?: InputMaybe<Scalars['Int']['input']>;
+  dateTimeOriginalDate?: InputMaybe<Scalars['Int']['input']>;
+  dateTimeOriginalMonth?: InputMaybe<Scalars['Int']['input']>;
+  dateTimeOriginalYear?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
-  month?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  year?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -354,6 +354,11 @@ export type UpdateMeMutationVariables = Exact<{
 
 export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename?: 'User', id: string, userId: string, name: string } };
 
+export type UploadPhotoMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UploadPhotoMutation = { __typename?: 'Mutation', uploadPhoto: { __typename?: 'PhotoUploadInfo', uploadUrl: string, expireAt: number } };
+
 
 export const AggregateDateTimeOriginalDateDocument = gql`
     query aggregateDateTimeOriginalDate($year: Int!, $month: Int!) {
@@ -430,7 +435,13 @@ export const PhotoDocument = gql`
     `;
 export const PhotosDocument = gql`
     query photos($year: Int, $month: Int, $date: Int, $limit: Int!, $offset: Int) {
-  photos(year: $year, month: $month, date: $date, limit: $limit, offset: $offset) {
+  photos(
+    dateTimeOriginalYear: $year
+    dateTimeOriginalMonth: $month
+    dateTimeOriginalDate: $date
+    limit: $limit
+    offset: $offset
+  ) {
     pageInfo {
       limit
       offset
@@ -457,6 +468,14 @@ export const UpdateMeDocument = gql`
     id
     userId
     name
+  }
+}
+    `;
+export const UploadPhotoDocument = gql`
+    mutation uploadPhoto {
+  uploadPhoto {
+    uploadUrl
+    expireAt
   }
 }
     `;
@@ -497,6 +516,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     updateMe(variables: UpdateMeMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdateMeMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateMeMutation>(UpdateMeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateMe', 'mutation', variables);
+    },
+    uploadPhoto(variables?: UploadPhotoMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UploadPhotoMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UploadPhotoMutation>(UploadPhotoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'uploadPhoto', 'mutation', variables);
     }
   };
 }

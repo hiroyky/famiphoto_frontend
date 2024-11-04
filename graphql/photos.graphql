@@ -6,9 +6,9 @@ query photos(
     $offset: Int
 ) {
     photos(
-        year: $year,
-        month: $month,
-        date: $date,
+        dateTimeOriginalYear: $year,
+        dateTimeOriginalMonth: $month,
+        dateTimeOriginalDate: $date,
         limit: $limit,
         offset: $offset
     ) {

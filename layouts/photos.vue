@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <alert-snackbar />
-    <f-header :nav-bar="false" />
+    <f-header />
     <v-main>
       <slot />
     </v-main>

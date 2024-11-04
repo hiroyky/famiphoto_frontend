@@ -11,7 +11,7 @@ interface State {
     paginationInfo: PaginationInfo
 }
 
-interface PhotoGetQuery {
+export interface PhotoGetQuery {
     year?: number
     month?: number
     date?: number
