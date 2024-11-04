@@ -90,11 +90,15 @@ router.use(
 
 function errorResponse (res: express.Response, err: any) {
     if (err instanceof ApiError) {
+        if (err.httpStatus >= 500) {
+            console.error(err)
+        }
         res.status(err.httpStatus)
         res.send(JSON.stringify(err))
         return
     }
 
+    console.log(err)
     res.status(500)
     res.send(JSON.stringify({ error: 'Internal server error' }))
 }

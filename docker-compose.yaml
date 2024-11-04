@@ -1,11 +1,12 @@
 version: '3.3'
 services:
-  builder:
+  frontend:
     build:
       context: .
       dockerfile: docker/builder/Dockerfile
-    container_name: famiphoto_frontend-builder
-    platform: linux/amd64
-    tty: true
-    volumes:
-      - ./:/workspace/famiphoto_frontend
+    container_name: famiphoto_frontend
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
